@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kezdolap</title>
+    <title>Webtech</title>
     <style>
         body {
             margin: 0;
@@ -14,7 +14,7 @@
             height: 100vh;
         }
 
-        div {
+        .header {
             width: 100%;
             height: 400px;
             text-align: center;
@@ -33,28 +33,37 @@
         main {
             flex: 1;
             padding: 20px;
-            text-align: center;
+        }
+
+        .tematika {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        ul {
+            flex: 1;
         }
 
         nav {
             text-align: center;
         }
 
-        nav a {
+        .tematika img {
+            flex: 0;
+        }
+
+        a {
             text-decoration: none;
             color: darkred;
             font-weight: bold;
         }
 
-        iframe {
-            display: block;
-            margin: 20px auto;
-        }
     </style>
 </head>
 
 <body>
-    <div>
+    <div class="header">
         <a href="kezdolap.html">
             <img src="iit.jpg" alt="Kezdőlap kép">
         </a>
@@ -68,11 +77,29 @@
             környezetek</a>
     </nav>
     <main>
-        <iframe width="60%" height="400" src="https://www.youtube.com/embed/GxmfcnU3feo" title="YouTube video"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-        </iframe>
+        <h1>Web technológia 1.</h1>
+        <p>Oktató: Agárdi Antia</p>
+        <p>Kredit: 5</p>
+        <h1>Tematika</h1>
+        <div class="tematika">
+            <ul style="flex:1;">
+                <li>Hálózati alapfogalmak, protokollok</li>
+                <li>HTTP protokoll</li>
+                <li>HTML űrlapok</li>
+                <li>Objektumok beágyazása HTML-be</li>
+                <li>XHTML elemek</li>
+                <li>Űrlap formázás elemei</li>
+                <li>JavaScript alapok</li>
+                <li>jQuery nyelv elemei</li>
+                <li>Apache webszerver telepítés, architektúra</li>
+                <li>PHP nyelv alapjai</li>
+                <li>PHP szerver oldali programok fejlesztése</li>
+                <li>AJAX alapok</li>
+                <li>GWT elemek</li>
+            </ul>
+
+            <img src="webtech.png" alt="Web technológia kép">
+        </div>
     </main>
     <footer>Zagyva Zsombor Gábor, FXVAUU, 2025</footer>
 </body>
