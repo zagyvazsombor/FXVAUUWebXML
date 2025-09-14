@@ -12,6 +12,7 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+
     }
 
     .header {
@@ -27,7 +28,11 @@
     }
 
     footer {
-      text-align: center
+      text-align: center;
+      background-color: #333;
+      color: #eee;
+      padding: 10px;
+      font-size: 14px;
     }
 
     main {
@@ -53,10 +58,25 @@
       flex: 0;
     }
 
-    a {
+    nav a {
       text-decoration: none;
-      color: darkred;
+      font-size: 30px;
+      color: rgb(45, 17, 150);
       font-weight: bold;
+      margin: 0 20px;
+      transition: color 0.3s, border-bottom 0.3s;
+      padding-bottom: 3px;
+    }
+
+    nav a:hover {
+      color: black;
+      border-bottom: 2px;
+    }
+
+    div {
+      width: 100%;
+      height: 400px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -69,10 +89,9 @@
   </div>
 
   <nav>
-    <a href="database.html">Adatbázis rendszerek</a> |
-    <a href="webtech.html">Web technológiák 1</a> |
-    <a href="webxml.html">Webes adatkezelő
-      környezetek</a>
+    <a href="database.html">Adatbázis rendszerek</a>
+    <a href="webtech.html">Web technológiák 1</a>
+    <a href="webxml.html">Webes adatkezelő környezetek</a>
   </nav>
   <main>
     <h1>Adatbázis rendszerek</h1>
@@ -81,32 +100,28 @@
     <h1>Tematika</h1>
     <div class="tematika">
       <ul>
-        <li>Adatkezelés és adatbáziskezelés alapfogalmai</li>
-        <li>Fileszervezési módszerek, B-fa index</li>
-        <li>Adatbázis architektúra</li>
-        <li>Adatmodellek, SDM modellek áttekintése</li>
-        <li>ER adatmodell, EER adatmodell</li>
-        <li>Hierarchikus adatmodell</li>
-        <li>Hálós adatmodell áttekintése, műveleti része</li>
-        <li>Relációs adatmodell, relációs struktúra és integritási feltételek</li>
-        <li>Relációs algebra, műveleti rész</li>
-        <li>SQL szabvány: DDL, DML, SELECT utasítások</li>
-        <li>SQL92 szabvány további elemei</li>
-        <li>Adatmodellezés problémái, fejlesztési módszertanok</li>
-        <li>DBMS termékek SQL implementációi</li>
-        <li>Tranzakciókezelés alapjai, ACID elvek</li>
-        <li>Zárolások típusai</li>
-        <li>Adatbázisok védelmi mechanizmusai: MAC és DAC modellek</li>
-        <li>Aktív adatbázis elemek, triggerek és job-ok</li>
-        <li>PL/SQL nyelv elemei</li>
-        <li>Tárolt eljárások, függvények, triggerek fejlesztése</li>
-        <li>Adatbázis objektumok áttekintése</li>
-        <li>Hatékonysági kérdések, műveleti gráf optimalizálás</li>
-        <li>SQL programozási felületek: beágyazott SQL, CLI, 4GL</li>
-        <li>ADO.Net és JDBC felület</li>
-        <li>JDBC kapcsolat programozása</li>
+        <li>Adatkezelés és adatbáziskezelés alapfogalmai.</li>
+        <li>Fileszervezési módszerek, B-fa index.</li>
+        <li>Adatbázis architektúra.</li>
+        <li>Adatmodellek, SDM modellek áttekintése.</li>
+        <li>ER adatmodell, EER adatmodell.</li>
+        <li>Hierarchikus adatmodell.</li>
+        <li>Hálós adatmodell áttekintése, műveleti része.</li>
+        <li>Relációs adatmodell, relációs struktúra és integritási feltételek.</li>
+        <li>Relációs algebra, műveleti rész.</li>
+        <li>SQL szabvány: DDL, DML, SELECT utasítások.</li>
+        <li>DBMS termékek SQL implementációi.</li>
+        <li>Tranzakciókezelés alapjai, ACID elvek.</li>
+        <li>Zárolások típusai.</li>
+        <li>Adatbázisok védelmi mechanizmusai: MAC és DAC modellek.</li>
+        <li>Aktív adatbázis elemek, triggerek és job-ok.</li>
+        <li>PL/SQL nyelv elemei.</li>
+        <li>Tárolt eljárások, függvények, triggerek fejlesztése.</li>
+        <li>Adatbázis objektumok áttekintése.</li>
+        <li>SQL programozási felületek: beágyazott SQL, CLI, 4GL.</li>
+        <li>ADO.Net és JDBC felület.</li>
+        <li>JDBC kapcsolat programozása.</li>
       </ul>
-
 
       <img src="database.png" alt="Adatbázis kép">
 

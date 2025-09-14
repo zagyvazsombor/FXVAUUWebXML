@@ -12,12 +12,14 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background: linear-gradient(to bottom, #ffffff, #3d6368);
         }
 
         div {
             width: 100%;
             height: 400px;
             text-align: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
         }
 
         img {
@@ -27,7 +29,11 @@
         }
 
         footer {
-            text-align: center
+            text-align: center;
+            background-color: #333;
+            color: #eee;
+            padding: 10px;
+            font-size: 14px;
         }
 
         main {
@@ -42,13 +48,23 @@
 
         nav a {
             text-decoration: none;
-            color: darkred;
+            font-size: 30px;
+            color: rgb(45, 17, 150);
             font-weight: bold;
+            margin: 0 20px;
+            transition: color 0.3s, border-bottom 0.3s;
+            padding-bottom: 3px;
+        }
+
+        nav a:hover {
+            color: black;
+            border-bottom: 2px;
         }
 
         iframe {
             display: block;
             margin: 20px auto;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -61,18 +77,18 @@
     </div>
 
     <nav>
-        <a href="database.html">Adatbázis
-            rendszerek</a> |
-        <a href="webtech.html">Web technológiák 1</a> |
-        <a href="webxml.html">Webes adatkezelő
-            környezetek</a>
+        <a href="database.html">Adatbázis rendszerek</a>
+        <a href="webtech.html">Web technológiák 1</a>
+        <a href="webxml.html">Webes adatkezelő környezetek</a>
     </nav>
     <main>
+
         <iframe width="60%" height="400" src="https://www.youtube.com/embed/GxmfcnU3feo" title="YouTube video"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
         </iframe>
+
     </main>
     <footer>Zagyva Zsombor Gábor, FXVAUU, 2025</footer>
 </body>

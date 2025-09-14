@@ -14,6 +14,13 @@
             height: 100vh;
         }
 
+
+        div {
+            width: 100%;
+            height: 400px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+        }
+
         .header {
             width: 100%;
             height: 400px;
@@ -27,7 +34,11 @@
         }
 
         footer {
-            text-align: center
+            text-align: center;
+            background-color: #333;
+            color: #eee;
+            padding: 10px;
+            font-size: 14px;
         }
 
         main {
@@ -53,10 +64,19 @@
             flex: 0;
         }
 
-        a {
+        nav a {
             text-decoration: none;
-            color: darkred;
+            font-size: 30px;
+            color: rgb(45, 17, 150);
             font-weight: bold;
+            margin: 0 20px;
+            transition: color 0.3s, border-bottom 0.3s;
+            padding-bottom: 3px;
+        }
+
+        nav a:hover {
+            color: black;
+            border-bottom: 2px;
         }
     </style>
 </head>
@@ -69,11 +89,9 @@
     </div>
 
     <nav>
-        <a href="database.html">Adatbázis
-            rendszerek</a> |
-        <a href="webtech.html">Web technológiák 1</a> |
-        <a href="webxml.html">Webes adatkezelő
-            környezetek</a>
+        <a href="database.html">Adatbázis rendszerek</a>
+        <a href="webtech.html">Web technológiák 1</a>
+        <a href="webxml.html">Webes adatkezelő környezetek</a>
     </nav>
     <main>
         <h1>Webes adatkezelő környezetek</h1>
@@ -82,21 +100,17 @@
         <h1>Tematika</h1>
         <div class="tematika">
             <ul>
-                <li>XML adatmodell</li>
-                <li>XML dokumentum elemei</li>
-                <li>DTD szabvány</li>
-                <li>XMLSchema szabvány elemei</li>
-                <li>Adatelemek hivatkozása: XPath szabvány</li>
-                <li>Integritási szabályok definiálása</li>
-                <li>XML kezelése gazdanyelvi környezetben</li>
-                <li>SAX és DOM API szabványok áttekintése, Java környezet</li>
-                <li>Dokumentum konverzió: XSL és XSLT</li>
-                <li>XSLT feldolgozás: szelekció, ciklusképzés, feltételes végrehajtás</li>
-                <li>XSLT: csoportképzés, aggregáció, változók használata</li>
-                <li>Dinamikus struktúra felépítés</li>
-                <li>XML adatok generálása adatbázisokból</li>
-                <li>SQL/XML szabvány elemei</li>
-                <li>JSON modell</li>
+                <li>XML kialakulása, XML szabvány elemei.</li>
+                <li>XML modell elemei, XDM modell készítése.</li>
+                <li>XMLSchema elemek áttekintése, tervezési módszertan.</li>
+                <li>JSON modell elemei. JSON séma kezelése.</li>
+                <li>JSON API programozás. YAML programozás.</li>
+                <li>A DOM API szabvány, alkalmazása.</li>
+                <li>Az XSLT transzormációs szabványa.</li>
+                <li>XPath szabvány eleme.</li>
+                <li>InfoSet, XDM, XInclude szabványok.</li>
+                <li>Kliens oldali adatperzisztencia lehetőségei.</li>
+                <li>Értékelés.</li>
             </ul>
 
             <img src="webxml.png" alt="Web XML kép">
