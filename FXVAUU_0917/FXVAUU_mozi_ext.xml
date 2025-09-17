@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mozi>
+    <film id="txn-nxm_2jb" mufaj="horror">
+        <rendezo id="nzk_4xm_2jb" nev="alex" />
+        <szinesz id="u5g_4xm_2jb" nev="Madison_Ivy" />
+        <szinesz id="a">
+            <gyerekszinesz />
+            <musicalszinesz />
+            <szinkronszinesz />
+        </szinesz>
+        <iro id="trv_4xm_2jb" />
+    </film>
+
+    <film id="abc-123" mufaj="drama">
+        <rendezo id="r1" nev="John Smith" />
+        <rendezo id="r2" nev="Jane Doe" />
+        <iro id="i1" nev="William Blake" />
+        <iro id="i2" nev="Emily Clark" />
+    </film>
+</mozi>
