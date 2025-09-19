@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="orarend.xsl" type="text/xsl"?>
 <ZZSG_orarend>
     <ora id="1" tipus="eloadas">
         <targy>Elektrotechnika-elektronika</targy>
@@ -64,8 +65,8 @@
         <targy>Mobil programozási alapok</targy>
         <idopont>
             <nap>Hétfő</nap>
-            <tol>8</tol>
-            <ig>10</ig>
+            <tol>18</tol>
+            <ig>20</ig>
         </idopont>
         <helyszin>L101</helyszin>
         <oktato>Dr. Agárdi Anita</oktato>
@@ -84,19 +85,7 @@
         <szak>Mérnök-informatikus BSc</szak>
     </ora>
 
-    <ora id="8" tipus="eloadas"> 
-        <targy>Windows rendszergazda</targy>
-        <idopont>
-            <nap>Kedd</nap>
-            <tol>16</tol>
-            <ig>18</ig>
-        </idopont>
-        <helyszin>L103</helyszin>
-        <oktato>Dr. Wagner György</oktato>
-        <szak>Mérnök-informatikus BSc</szak>
-    </ora>
-
-    <ora id="9" tipus="eloadas">
+    <ora id="8" tipus="eloadas">
         <targy>Mesterséges intelligencia alapok</targy>
         <idopont>
             <nap>Kedd</nap>
@@ -108,7 +97,7 @@
         <szak>Mérnök-informatikus BSc</szak>
     </ora>
 
-    <ora id="10" tipus="gyakorlat">
+    <ora id="9" tipus="gyakorlat">
         <targy>Mesterséges intelligencia alapok</targy>
         <idopont>
             <nap>Kedd</nap>
@@ -120,7 +109,7 @@
         <szak>Mérnök-informatikus BSc</szak>
     </ora>
 
-    <ora id="11" tipus="gyakorlat">
+    <ora id="10" tipus="gyakorlat">
         <targy>Elektrotechnika-elektronika</targy>
         <idopont>
             <nap>Kedd</nap>
@@ -129,6 +118,18 @@
         </idopont>
         <helyszin>A1/317</helyszin>
         <oktato>Szabó Norbert István</oktato>
+        <szak>Mérnök-informatikus BSc</szak>
+    </ora>
+
+        <ora id="11" tipus="eloadas"> 
+        <targy>Windows rendszergazda</targy>
+        <idopont>
+            <nap>Kedd</nap>
+            <tol>16</tol>
+            <ig>18</ig>
+        </idopont>
+        <helyszin>L103</helyszin>
+        <oktato>Dr. Wagner György</oktato>
         <szak>Mérnök-informatikus BSc</szak>
     </ora>
 
