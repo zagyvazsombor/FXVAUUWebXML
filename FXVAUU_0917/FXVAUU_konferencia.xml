@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <konferencia>
-<cim/>
-<előadó>
-    <név/>
-    <adószám/>
-    <lakcim/>
-</előadó>
-<dátum/>
-<helyszín/>
-<hallgatók>
-    <hallgató>
-        <név/>
-        <lakcím/>
-    </hallgató>    
-</hallgatók>
-
+    <cim>Informatikai Innovációk 2025</cim>
+    <előadó>
+        <név>Kiss Péter</név>
+        <adószám>12345678-1-42</adószám>
+        <lakcim>1111 Budapest, Fő utca 10.</lakcim>
+    </előadó>
+    <dátum>2025-10-15</dátum>
+    <helyszín>Budapest Kongresszusi Központ</helyszín>
+    <hallgatók>
+        <hallgató>
+            <név>Nagy Anna</név>
+            <lakcím>9022 Győr, Kossuth Lajos utca 5.</lakcím>
+        </hallgató>
+        <hallgató>
+            <név>Kovács Márton</név>
+            <lakcím>6720 Szeged, Tisza Lajos körút 12.</lakcím>
+        </hallgató>
+    </hallgatók>
 </konferencia>
