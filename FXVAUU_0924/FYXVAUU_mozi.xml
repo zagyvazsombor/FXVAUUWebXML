@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mozi SYSTEM "FXVAUU_mozi.dtd">
+
+<mozi>
+    <film id="f1" mufaj="horror">
+        <rendezo id="r1" nev="Alex"/>
+        <szinesz id="s1" nev="Madison Ivy"/>
+        <iro id="i1"/>
+    </film>
+</mozi>
