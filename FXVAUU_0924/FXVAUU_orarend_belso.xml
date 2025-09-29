@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE ZZSG_orarend SYSTEM "FXVAUU_orarend.dtd">
+<!DOCTYPE ZZSG_orarend [
+<!ELEMENT ZZSG_orarend (ora)+>
+
+<!ELEMENT ora (targy, idopont, helyszin, oktato, szak)>
+<!ATTLIST ora id ID #REQUIRED>
+<!ATTLIST ora tipus (eloadas | gyakorlat) #REQUIRED>
+
+<!ELEMENT targy (#PCDATA)>
+
+<!ELEMENT idopont (nap, tol, ig)>
+<!ELEMENT nap (#PCDATA)>
+<!ELEMENT tol (#PCDATA)>
+<!ELEMENT ig (#PCDATA)>
+
+<!ELEMENT helyszin (#PCDATA)>
+<!ELEMENT oktato (#PCDATA)>
+<!ELEMENT szak (#PCDATA)>
+]>
 
 <ZZSG_orarend>
     <ora id="o1" tipus="eloadas">
