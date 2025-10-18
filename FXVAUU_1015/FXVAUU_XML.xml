@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<vendeglatas>
+<vendeglatas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="FXVAUU_XMLSchema.xsd">
 
     <!-- Éttermek-->
     <etterem ekod="e1">
@@ -31,7 +32,7 @@
         <vegzettseg>Institut Paul Bocuse</vegzettseg>
     </foszakacs>
 
-    <foszakacs fkod="f1" e_f="e2">
+    <foszakacs fkod="f2" e_f="e2">
         <nev>Nagy Károly</nev>
         <eletkor>30</eletkor>
         <vegzettseg>Le Cordon BLeu</vegzettseg>
