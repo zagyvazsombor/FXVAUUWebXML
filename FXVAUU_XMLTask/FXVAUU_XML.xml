@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jatek_ipar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="FXVAUU_XMLSchema.xsd">
+
+    <!-- Motorok -->
+    <motor m_ID="m1">
+        <nev>Unreal Engine</nev>
+        <verzio>5.3</verzio>
+        <licenc>Kereskedelmi</licenc>
+        <ceg>Epic Games</ceg>
+    </motor>
+
+    <motor m_ID="m2">
+        <nev>Unity</nev>
+        <verzio>2023.1</verzio>
+        <licenc>Ingyenes</licenc>
+        <ceg>Unity Technologies</ceg>
+    </motor>
+
+    <motor m_ID="m3">
+        <nev>Frostbite</nev>
+        <verzio>4.0</verzio>
+        <licenc>Belső fejlesztésű</licenc>
+        <ceg>EA DICE</ceg>
+    </motor>
+
+    <motor m_ID="m4">
+        <nev>Godot</nev>
+        <verzio>4.1</verzio>
+        <licenc>Nyílt forráskódú</licenc>
+        <ceg>Godot Foundation</ceg>
+    </motor>
+
+
+    <!-- Játékok -->
+    <jatek j_ID="j1" m_ID="m1">
+        <cim>Echoes of Eternity</cim>
+        <megjelenes>2024</megjelenes>
+        <platform>PC</platform>
+        <platform>
+        PS5</platform>
+        <mufaj>RPG</mufaj>
+        <mufaj>Kaland</mufaj>
+    </jatek>
+
+    <jatek j_ID="j2" m_ID="m2">
+        <cim>Cyber Run</cim>
+        <megjelenes>2023</megjelenes>
+        <platform>PC</platform>
+        <platform>Xbox</platform>
+        <platform>
+        Switch</platform>
+        <mufaj>Akció</mufaj>
+        <mufaj>Futó</mufaj>
+    </jatek>
+
+    <jatek j_ID="j3" m_ID="m3">
+        <cim>Battlefield Origins</cim>
+        <megjelenes>2022</megjelenes>
+        <platform>PC</platform>
+        <platform>
+        PS5</platform>
+        <platform>Xbox</platform>
+        <mufaj>Lövölde</mufaj>
+        <mufaj>Multiplayer</mufaj>
+    </jatek>
+
+    <jatek j_ID="j4" m_ID="m4">
+        <cim>Pixel Valley</cim>
+        <megjelenes>2025</megjelenes>
+        <platform>PC</platform>
+        <platform>Switch</platform>
+        <mufaj>
+        Farm</mufaj>
+        <mufaj>Szimuláció</mufaj>
+    </jatek>
+
+
+    <!-- Játék leírások -->
+    <leiras l_ID="l1" j_ID="j1">
+        <nyelv>magyar</nyelv>
+        <nyelv>angol</nyelv>
+        <tartalom>Misztikus kaland egy összeomló világban,
+        ahol a döntéseid formálják a történetet.</tartalom>
+        <korosztaly>PEGI 16</korosztaly>
+    </leiras>
+
+    <leiras l_ID="l2" j_ID="j2">
+        <nyelv>angol</nyelv>
+        <nyelv>német</nyelv>
+        <tartalom>Gyors tempójú futurisztikus akciójáték,
+        tele neonfényekkel és veszéllyel.</tartalom>
+        <korosztaly>PEGI 12</korosztaly>
+    </leiras>
+
+    <leiras l_ID="l3" j_ID="j3">
+        <nyelv>magyar</nyelv>
+        <nyelv>angol</nyelv>
+        <tartalom>Realista katonai lövölde valóságos
+        fizikai modellezéssel és többjátékos módokkal.</tartalom>
+        <korosztaly>PEGI 18</korosztaly>
+    </leiras>
+
+    <leiras l_ID="l4" j_ID="j4">
+        <nyelv>magyar</nyelv>
+        <nyelv>angol</nyelv>
+        <tartalom>Bélelt, pixeles farmélet nyugodt
+        hangulatban. Termessz növényeket, nevelj
+            állatokat és alakítsd a saját völgyedet.</tartalom>
+        <korosztaly>PEGI 3</korosztaly>
+    </leiras>
+
+
+    <!-- Kiadók  -->
+    <kiado k_ID="k1">
+        <nev>CD Projekt</nev>
+        <email>contact@cdprojekt.com</email>
+        <alapitas>1994</alapitas>
+        <orszag>
+        Lengyelország</orszag>
+    </kiado>
+
+    <kiado k_ID="k2">
+        <nev>Electronic Arts</nev>
+        <email>info@ea.com</email>
+        <alapitas>1982</alapitas>
+        <orszag>USA</orszag>
+    </kiado>
+
+    <kiado k_ID="k3">
+        <nev>Ubisoft</nev>
+        <email>support@ubisoft.com</email>
+        <alapitas>1986</alapitas>
+        <orszag>
+        Franciaország</orszag>
+    </kiado>
+
+    <kiado k_ID="k4">
+        <nev>IndieForge</nev>
+        <email>hello@indieforge.io</email>
+        <alapitas>2015</alapitas>
+        <orszag>
+        Magyarország</orszag>
+    </kiado>
+
+
+    <!-- Kiadási adatok-->
+    <kiadas k_ID="k1" j_ID="j1">
+        <datum>2024-10-15</datum>
+        <ar>19999</ar>
+    </kiadas>
+
+    <kiadas k_ID="k2" j_ID="j3">
+        <datum>2022-11-05</datum>
+        <ar>24999</ar>
+    </kiadas>
+
+    <kiadas k_ID="k3" j_ID="j2">
+        <datum>2023-09-20</datum>
+        <ar>15999</ar>
+    </kiadas>
+
+    <kiadas k_ID="k4" j_ID="j4">
+        <datum>2025-03-01</datum>
+        <ar>9999</ar>
+    </kiadas>
+
+
+    <!-- Fejlesztők-->
+    <fejleszto f_ID="f1">
+        <nev>
+            <vezetek_nev>Kovács</vezetek_nev>
+            <kereszt_nev>András</kereszt_nev>
+        </nev>
+        <szerepkor>Programozó</szerepkor>
+        <szerepkor>AI
+        fejlesztő</szerepkor>
+        <tapasztalat>5</tapasztalat>
+        <email>andras.kovacs@studiox.com</email>
+    </fejleszto>
+
+    <fejleszto f_ID="f2">
+        <nev>
+            <vezetek_nev>Nagy</vezetek_nev>
+            <kereszt_nev>Laura</kereszt_nev>
+        </nev>
+        <szerepkor>Grafikus</szerepkor>
+        <szerepkor>UI
+        designer</szerepkor>
+        <tapasztalat>7</tapasztalat>
+        <email>laura.nagy@studiox.com</email>
+    </fejleszto>
+
+    <fejleszto f_ID="f3">
+        <nev>
+            <vezetek_nev>Szabó</vezetek_nev>
+            <kereszt_nev>Gergő</kereszt_nev>
+        </nev>
+        <szerepkor>Hangmérnök</szerepkor>
+        <tapasztalat>
+            4</tapasztalat>
+        <email>gergo.szabo@studiox.com</email>
+    </fejleszto>
+
+    <fejleszto f_ID="f4">
+        <nev>
+            <vezetek_nev>Fekete</vezetek_nev>
+            <kereszt_nev>Emese</kereszt_nev>
+        </nev>
+        <szerepkor>Gameplay designer</szerepkor>
+        <tapasztalat>
+            6</tapasztalat>
+        <email>emese.fekete@indieforge.io</email>
+    </fejleszto>
+
+
+    <!-- Fejlesztési adatok -->
+    <fejlesztes f_ID="f1" j_ID="j1">
+        <feladat>AI logika fejlesztés</feladat>
+        <munkaora>300</munkaora>
+    </fejlesztes>
+
+    <fejlesztes f_ID="f2" j_ID="j2">
+        <feladat>Felhasználói felület és vizuális effektek</feladat>
+        <munkaora>250</munkaora>
+    </fejlesztes>
+
+    <fejlesztes f_ID="f3" j_ID="j3">
+        <feladat>Hangrendszer integráció</feladat>
+        <munkaora>180</munkaora>
+    </fejlesztes>
+
+    <fejlesztes f_ID="f4" j_ID="j4">
+        <feladat>Játékmechanikák kiegyensúlyozása</feladat>
+        <munkaora>210</munkaora>
+    </fejlesztes>
+
+
+    <!-- Tesztelők -->
+    <tesztelo t_ID="t1">
+        <nev>
+            <vezetek_nev>Farkas</vezetek_nev>
+            <kereszt_nev>Dóra</kereszt_nev>
+        </nev>
+        <specializacio>Teljesítményteszt</specializacio>
+        <tapasztalat>
+            3</tapasztalat>
+        <email>dora.farkas@qatest.com</email>
+    </tesztelo>
+
+    <tesztelo t_ID="t2">
+        <nev>
+            <vezetek_nev>Tóth</vezetek_nev>
+            <kereszt_nev>Ádám</kereszt_nev>
+        </nev>
+        <specializacio>Bugvadászat</specializacio>
+        <tapasztalat>
+            5</tapasztalat>
+        <email>adam.toth@qatest.com</email>
+    </tesztelo>
+
+    <tesztelo t_ID="t3">
+        <nev>
+            <vezetek_nev>Balogh</vezetek_nev>
+            <kereszt_nev>Kata</kereszt_nev>
+        </nev>
+        <specializacio>Grafikai hibák</specializacio>
+        <tapasztalat>
+            2</tapasztalat>
+        <email>kata.balogh@qatest.com</email>
+    </tesztelo>
+
+    <tesztelo t_ID="t4">
+        <nev>
+            <vezetek_nev>Molnár</vezetek_nev>
+            <kereszt_nev>Zsolt</kereszt_nev>
+        </nev>
+        <specializacio>Kooperatív mód tesztelése</specializacio>
+        <tapasztalat>
+            6</tapasztalat>
+        <email>zsolt.molnar@qatest.com</email>
+    </tesztelo>
+
+
+    <!-- Tesztelési adatok -->
+    <teszteles t_ID="t1" j_ID="j1">
+        <datum>2024-09-01</datum>
+        <eredmeny>Sikeres</eredmeny>
+    </teszteles>
+
+    <teszteles t_ID="t2" j_ID="j2">
+        <datum>2023-08-10</datum>
+        <eredmeny>Újratesztelendő - kisebb hibák</eredmeny>
+    </teszteles>
+
+    <teszteles t_ID="t3" j_ID="j3">
+        <datum>2022-09-12</datum>
+        <eredmeny>Stabil verzió, kiadásra kész</eredmeny>
+    </teszteles>
+
+    <teszteles t_ID="t4" j_ID="j4">
+        <datum>2025-02-20</datum>
+        <eredmeny>Fejlesztés alatt - korai hozzáférés</eredmeny>
+    </teszteles>
+
+</jatek_ipar>

@@ -1,0 +1,199 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="jatek_ipar">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="motor" type="motorTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="jatek" type="jatekTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="leiras" type="leirasTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="kiado" type="kiadoTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="kiadas" type="kiadasTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="fejleszto" type="fejlesztoTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="fejlesztes" type="fejlesztesTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="tesztelo" type="teszteloTipus" maxOccurs="unbounded"></xs:element>
+                <xs:element name="teszteles" type="tesztelesTipus" maxOccurs="unbounded"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+
+        <!-- kulcsok -->
+        <xs:key name="motor_kulcs">
+            <xs:selector xpath="motor" />
+            <xs:field xpath="@m_ID" />
+        </xs:key>
+
+        <xs:key name="jatek_kulcs">
+            <xs:selector xpath="jatek" />
+            <xs:field xpath="@j_ID" />
+        </xs:key>
+
+        <xs:key name="leiras_kulcs">
+            <xs:selector xpath="leiras" />
+            <xs:field xpath="@l_ID" />
+        </xs:key>
+
+        <xs:key name="kiado_kulcs">
+            <xs:selector xpath="kiado" />
+            <xs:field xpath="@k_ID" />
+        </xs:key>
+
+        <xs:key name="fejleszto_kulcs">
+            <xs:selector xpath="fejleszto" />
+            <xs:field xpath="@f_ID" />
+        </xs:key>
+
+        <xs:key name="tesztelo_kulcs">
+            <xs:selector xpath="tesztelo" />
+            <xs:field xpath="@t_ID" />
+        </xs:key>
+
+
+        <!-- idegen kulcsok -->
+        <xs:keyref name="jatek_motor_fk" refer="motor_kulcs">
+            <xs:selector xpath="jatek" />
+            <xs:field xpath="@m_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="leiras_jatek_fk" refer="jatek_kulcs">
+            <xs:selector xpath="leiras" />
+            <xs:field xpath="@j_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="kiadas_kiado_fk" refer="kiado_kulcs">
+            <xs:selector xpath="kiadas" />
+            <xs:field xpath="@k_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="kiadas_jatek_fk" refer="jatek_kulcs">
+            <xs:selector xpath="kiadas" />
+            <xs:field xpath="@j_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="fejlesztes_fejleszto_fk" refer="fejleszto_kulcs">
+            <xs:selector xpath="fejlesztes" />
+            <xs:field xpath="@f_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="fejlesztes_jatek_fk" refer="jatek_kulcs">
+            <xs:selector xpath="fejlesztes" />
+            <xs:field xpath="@j_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="teszteles_tesztelo_fk" refer="tesztelo_kulcs">
+            <xs:selector xpath="teszteles" />
+            <xs:field xpath="@t_ID" />
+        </xs:keyref>
+
+        <xs:keyref name="teszteles_jatek_fk" refer="jatek_kulcs">
+            <xs:selector xpath="teszteles" />
+            <xs:field xpath="@j_ID" />
+        </xs:keyref>
+
+
+        <!-- Az 1:1 kapcsolat megvalósításához -->
+        <xs:unique name="unique_leiras_jatek">
+            <xs:selector xpath="leiras" />
+            <xs:field xpath="@j_ID" />
+        </xs:unique>
+    </xs:element>
+
+
+    <!-- kommplex tipusok-->
+    <xs:complexType name="motorTipus">
+        <xs:sequence>
+            <xs:element name="nev" type="xs:string"></xs:element>
+            <xs:element name="verzio" type="xs:string"></xs:element>
+            <xs:element name="licenc" type="xs:string"></xs:element>
+            <xs:element name="ceg" type="xs:string"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="m_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="jatekTipus">
+        <xs:sequence>
+            <xs:element name="cim" type="xs:string"></xs:element>
+            <xs:element name="megjelenes" type="xs:integer"></xs:element>
+            <xs:element name="platform" type="xs:string" maxOccurs="unbounded"></xs:element>
+            <xs:element name="mufaj" type="xs:string" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="m_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="leirasTipus">
+        <xs:sequence>
+            <xs:element name="nyelv" type="xs:string" maxOccurs="unbounded"></xs:element>
+            <xs:element name="tartalom" type="xs:string"></xs:element>
+            <xs:element name="korosztaly" type="xs:string"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="l_ID" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="kiadoTipus">
+        <xs:sequence>
+            <xs:element name="nev" type="xs:string"></xs:element>
+            <xs:element name="email" type="xs:string"></xs:element>
+            <xs:element name="alapitas" type="xs:integer"></xs:element>
+            <xs:element name="orszag" type="xs:string"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="k_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="kiadasTipus">
+        <xs:sequence>
+            <xs:element name="datum" type="xs:string"></xs:element>
+            <xs:element name="ar" type="xs:integer"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="k_ID" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="fejlesztoTipus">
+        <xs:sequence>
+            <xs:element name="nev" type="nevTipus"></xs:element>
+            <xs:element name="szerepkor" type="xs:string" maxOccurs="unbounded"></xs:element>
+            <xs:element name="tapasztalat" type="xs:integer"></xs:element>
+            <xs:element name="email" type="xs:string"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="f_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="nevTipus">
+        <xs:sequence>
+            <xs:element name="vezetek_nev" type="xs:string"></xs:element>
+            <xs:element name="kereszt_nev" type="xs:string"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fejlesztesTipus">
+        <xs:sequence>
+            <xs:element name="feladat" type="xs:string"></xs:element>
+            <xs:element name="munkaora" type="xs:integer"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="f_ID" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="teszteloTipus">
+        <xs:sequence>
+            <xs:element name="nev" type="nevTipus"></xs:element>
+            <xs:element name="specializacio" type="xs:string"></xs:element>
+            <xs:element name="tapasztalat" type="xs:integer"></xs:element>
+            <xs:element name="email" type="xs:string"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="t_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="tesztelesTipus">
+        <xs:sequence>
+            <xs:element name="datum" type="xs:string"></xs:element>
+            <xs:element name="eredmeny" type="xs:string"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="t_ID" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+
+</xs:schema>
