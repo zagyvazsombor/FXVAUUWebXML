@@ -1,0 +1,9 @@
+Ora [id=1, tipus=eloadas]
+  targy: Elektrotechnika-elektronika
+  idopont/nap: Hétfő
+  idopont/tol: 8
+  idopont/ig: 10
+  helyszin: E3
+  oktato: Szabó Norbert István
+  szak: Mérnök-informatikus BSc
+
