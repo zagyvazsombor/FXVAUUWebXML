@@ -1,0 +1,279 @@
+Gyökér elem: jatek_ipar
+----------------------------------------
+
+Aktuális elem: motor
+motor azonosító: m1
+név: Unreal Engine
+verzió: 5.3
+licenc: Kereskedelmi
+cég: Epic Games
+
+Aktuális elem: motor
+motor azonosító: m2
+név: Unity
+verzió: 2023.1
+licenc: Ingyenes
+cég: Unity Technologies
+
+Aktuális elem: motor
+motor azonosító: m3
+név: Frostbite
+verzió: 4.0
+licenc: Belső fejlesztésű
+cég: EA DICE
+
+Aktuális elem: motor
+motor azonosító: m4
+név: Godot
+verzió: 4.1
+licenc: Nyílt forráskódú
+cég: Godot Foundation
+
+Aktuális elem: jatek
+játék azonosító: j1
+használt motor: m1
+cím: Echoes of Eternity
+megjelenés: 2024
+platform: PC
+platform: PS5
+műfaj: RPG
+műfaj: Kaland
+
+Aktuális elem: jatek
+játék azonosító: j2
+használt motor: m2
+cím: Cyber Run
+megjelenés: 2023
+platform: PC
+platform: Xbox
+platform: Switch
+műfaj: Akció
+műfaj: Futó
+
+Aktuális elem: jatek
+játék azonosító: j3
+használt motor: m3
+cím: Battlefield Origins
+megjelenés: 2022
+platform: PC
+platform: PS5
+platform: Xbox
+műfaj: Lövölde
+műfaj: Multiplayer
+
+Aktuális elem: jatek
+játék azonosító: j4
+használt motor: m4
+cím: Pixel Valley
+megjelenés: 2025
+platform: PC
+platform: Switch
+műfaj: Farm
+műfaj: Szimuláció
+
+Aktuális elem: leiras
+leírás azonosító: l1
+játék azonosító: j1
+nyelv: magyar
+nyelv: angol
+tartalom: Misztikus kaland egy összeomló világban,
+        ahol a döntéseid formálják a történetet.
+korosztály: PEGI 16
+
+Aktuális elem: leiras
+leírás azonosító: l2
+játék azonosító: j2
+nyelv: angol
+nyelv: német
+tartalom: Gyors tempójú futurisztikus akciójáték,
+        tele neonfényekkel és veszéllyel.
+korosztály: PEGI 12
+
+Aktuális elem: leiras
+leírás azonosító: l3
+játék azonosító: j3
+nyelv: magyar
+nyelv: angol
+tartalom: Realista katonai lövölde valóságos
+        fizikai modellezéssel és többjátékos módokkal.
+korosztály: PEGI 18
+
+Aktuális elem: leiras
+leírás azonosító: l4
+játék azonosító: j4
+nyelv: magyar
+nyelv: angol
+tartalom: Bélelt, pixeles farmélet nyugodt
+        hangulatban. Termessz növényeket, nevelj
+            állatokat és alakítsd a saját völgyedet.
+korosztály: PEGI 3
+
+Aktuális elem: kiado
+kiadó azonosító: k1
+név: CD Projekt
+email: contact@cdprojekt.com
+alapítás: 1994
+ország: Lengyelország
+
+Aktuális elem: kiado
+kiadó azonosító: k2
+név: Electronic Arts
+email: info@ea.com
+alapítás: 1982
+ország: USA
+
+Aktuális elem: kiado
+kiadó azonosító: k3
+név: Ubisoft
+email: support@ubisoft.com
+alapítás: 1986
+ország: Franciaország
+
+Aktuális elem: kiado
+kiadó azonosító: k4
+név: IndieForge
+email: hello@indieforge.io
+alapítás: 2015
+ország: Magyarország
+
+Aktuális elem: kiadas
+kiadó azonosító: k1
+játék azonosító: j1
+dátum: 2024-10-15
+ár: 19999
+
+Aktuális elem: kiadas
+kiadó azonosító: k2
+játék azonosító: j3
+dátum: 2022-11-05
+ár: 24999
+
+Aktuális elem: kiadas
+kiadó azonosító: k3
+játék azonosító: j2
+dátum: 2023-09-20
+ár: 15999
+
+Aktuális elem: kiadas
+kiadó azonosító: k4
+játék azonosító: j4
+dátum: 2025-03-01
+ár: 9999
+
+Aktuális elem: fejleszto
+fejlesztő azonosító: f1
+vezetéknév: Kovács
+keresztnév: András
+szerepkör: Programozó
+szerepkör: AI
+        fejlesztő
+tapasztalat (év): 5
+email: andras.kovacs@studiox.com
+
+Aktuális elem: fejleszto
+fejlesztő azonosító: f2
+vezetéknév: Nagy
+keresztnév: Laura
+szerepkör: Grafikus
+szerepkör: UI
+        designer
+tapasztalat (év): 7
+email: laura.nagy@studiox.com
+
+Aktuális elem: fejleszto
+fejlesztő azonosító: f3
+vezetéknév: Szabó
+keresztnév: Gergő
+szerepkör: Hangmérnök
+tapasztalat (év): 4
+email: gergo.szabo@studiox.com
+
+Aktuális elem: fejleszto
+fejlesztő azonosító: f4
+vezetéknév: Fekete
+keresztnév: Emese
+szerepkör: Gameplay designer
+tapasztalat (év): 6
+email: emese.fekete@indieforge.io
+
+Aktuális elem: fejlesztes
+fejlesztő azonosító: f1
+játék azonosító: j1
+feladat: AI logika fejlesztés
+munkaóra: 300
+
+Aktuális elem: fejlesztes
+fejlesztő azonosító: f2
+játék azonosító: j2
+feladat: Felhasználói felület és vizuális effektek
+munkaóra: 250
+
+Aktuális elem: fejlesztes
+fejlesztő azonosító: f3
+játék azonosító: j3
+feladat: Hangrendszer integráció
+munkaóra: 180
+
+Aktuális elem: fejlesztes
+fejlesztő azonosító: f4
+játék azonosító: j4
+feladat: Játékmechanikák kiegyensúlyozása
+munkaóra: 210
+
+Aktuális elem: tesztelo
+tesztelő azonosító: t1
+vezetéknév: Farkas
+keresztnév: Dóra
+specializáció: Teljesítményteszt
+tapasztalat (év): 3
+email: dora.farkas@qatest.com
+
+Aktuális elem: tesztelo
+tesztelő azonosító: t2
+vezetéknév: Tóth
+keresztnév: Ádám
+specializáció: Bugvadászat
+tapasztalat (év): 5
+email: adam.toth@qatest.com
+
+Aktuális elem: tesztelo
+tesztelő azonosító: t3
+vezetéknév: Balogh
+keresztnév: Kata
+specializáció: Grafikai hibák
+tapasztalat (év): 2
+email: kata.balogh@qatest.com
+
+Aktuális elem: tesztelo
+tesztelő azonosító: t4
+vezetéknév: Molnár
+keresztnév: Zsolt
+specializáció: Kooperatív mód tesztelése
+tapasztalat (év): 6
+email: zsolt.molnar@qatest.com
+
+Aktuális elem: teszteles
+tesztelő azonosító: t1
+játék azonosító: j1
+dátum: 2024-09-01
+eredmény: Sikeres
+
+Aktuális elem: teszteles
+tesztelő azonosító: t2
+játék azonosító: j2
+dátum: 2023-08-10
+eredmény: Újratesztelendő - kisebb hibák
+
+Aktuális elem: teszteles
+tesztelő azonosító: t3
+játék azonosító: j3
+dátum: 2022-09-12
+eredmény: Stabil verzió, kiadásra kész
+
+Aktuális elem: teszteles
+tesztelő azonosító: t4
+játék azonosító: j4
+dátum: 2025-02-20
+eredmény: Fejlesztés alatt - korai hozzáférés
+
+--- Mentve fájlba: FxvauuDomRead_output.txt ---
