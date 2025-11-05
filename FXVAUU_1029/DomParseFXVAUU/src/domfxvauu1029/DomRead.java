@@ -2,6 +2,7 @@ package domfxvauu1029;
 
 import java.io.File;
 import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,11 +13,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class DomRead {
+public class DOMRead {
     public static void main(String argv[]) throws SAXException,
             IOException, ParserConfigurationException {
 
-        File xmlFile = new File("FXVAUUhallgatok.xml");
+        File xmlFile = new File("FXVAUUhallgato.xml");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = factory.newDocumentBuilder();
 
