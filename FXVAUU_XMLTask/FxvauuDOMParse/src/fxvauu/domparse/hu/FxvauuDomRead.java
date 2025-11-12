@@ -160,7 +160,7 @@ public class FxvauuDomRead {
                     Element nev = (Element) e.getElementsByTagName("nev").item(0);
                     if (nev != null) {
                         printlnBoth(pw, "vezetéknév: " + getText(nev, "vezeteknev"));
-                        printlnBoth(pw, "keresztnév: " + getText(nev, "kereszt_nev"));
+                        printlnBoth(pw, "keresztnév: " + getText(nev, "keresztnev"));
                     }
 
                     NodeList szerepkorok = e.getElementsByTagName("szerepkor");
@@ -203,7 +203,7 @@ public class FxvauuDomRead {
                     Element nev = (Element) e.getElementsByTagName("nev").item(0);
                     if (nev != null) {
                         printlnBoth(pw, "vezetéknév: " + getText(nev, "vezeteknev"));
-                        printlnBoth(pw, "keresztnév: " + getText(nev, "kereszt_nev"));
+                        printlnBoth(pw, "keresztnév: " + getText(nev, "keresztnev"));
                     }
                     printlnBoth(pw, "specializáció: " + getText(e, "specializacio"));
                     printlnBoth(pw, "tapasztalat (év): " + getText(e, "tapasztalat"));

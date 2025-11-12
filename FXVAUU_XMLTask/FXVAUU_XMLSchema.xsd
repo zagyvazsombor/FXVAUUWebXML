@@ -1,7 +1,7 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <xs:element name="jatek_ipar">
+    <xs:element name="jatekIpar">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="motor" type="motorTipus" maxOccurs="unbounded"></xs:element>
@@ -130,7 +130,24 @@
             <xs:enumeration value="PEGI 16" />
             <xs:enumeration value="PEGI 18" />
         </xs:restriction>
+    </xs:simpleType>
 
+    <xs:simpleType name="arType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="tapasztalatType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="munkaoraType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1" />
+        </xs:restriction>
     </xs:simpleType>
 
     <!-- kommplex tipusok-->
@@ -178,7 +195,7 @@
     <xs:complexType name="kiadasTipus">
         <xs:sequence>
             <xs:element name="datum" type="xs:string"></xs:element>
-            <xs:element name="ar" type="xs:integer"></xs:element>
+            <xs:element name="ar" type="arType"></xs:element>
         </xs:sequence>
         <xs:attribute name="k_ID" type="xs:string" use="required"></xs:attribute>
         <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
@@ -188,7 +205,7 @@
         <xs:sequence>
             <xs:element name="nev" type="nevTipus"></xs:element>
             <xs:element name="szerepkor" type="xs:string" maxOccurs="unbounded"></xs:element>
-            <xs:element name="tapasztalat" type="xs:integer"></xs:element>
+            <xs:element name="tapasztalat" type="tapasztalatType"></xs:element>
             <xs:element name="email" type="emailType"></xs:element>
         </xs:sequence>
         <xs:attribute name="f_ID" type="xs:string" use="required"></xs:attribute>
@@ -204,7 +221,7 @@
     <xs:complexType name="fejlesztesTipus">
         <xs:sequence>
             <xs:element name="feladat" type="xs:string"></xs:element>
-            <xs:element name="munkaora" type="xs:integer"></xs:element>
+            <xs:element name="munkaora" type="munkaoraType"></xs:element>
         </xs:sequence>
         <xs:attribute name="f_ID" type="xs:string" use="required"></xs:attribute>
         <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
@@ -214,7 +231,7 @@
         <xs:sequence>
             <xs:element name="nev" type="nevTipus"></xs:element>
             <xs:element name="specializacio" type="xs:string"></xs:element>
-            <xs:element name="tapasztalat" type="xs:integer"></xs:element>
+            <xs:element name="tapasztalat" type="tapasztalatType"></xs:element>
             <xs:element name="email" type="emailType"></xs:element>
         </xs:sequence>
         <xs:attribute name="t_ID" type="xs:string" use="required"></xs:attribute>

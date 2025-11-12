@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<jatek_ipar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<jatekIpar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="FXVAUU_XMLSchema.xsd">
 
     <!-- Motorok -->
@@ -304,4 +304,4 @@
         <eredmeny>Sikeres</eredmeny>
     </teszteles>
 
-</jatek_ipar>
+</jatekIpar>

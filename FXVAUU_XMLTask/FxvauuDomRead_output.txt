@@ -1,4 +1,4 @@
-Gyökér elem: jatek_ipar
+Gyökér elem: jatekIpar
 ----------------------------------------
 
 Aktuális elem: motor
@@ -262,18 +262,18 @@ Aktuális elem: teszteles
 tesztelő azonosító: t2
 játék azonosító: j2
 dátum: 2023-08-10
-eredmény: Újratesztelendő - kisebb hibák
+eredmény: Sikeres
 
 Aktuális elem: teszteles
 tesztelő azonosító: t3
 játék azonosító: j3
 dátum: 2022-09-12
-eredmény: Stabil verzió, kiadásra kész
+eredmény: Sikertelen
 
 Aktuális elem: teszteles
 tesztelő azonosító: t4
 játék azonosító: j4
 dátum: 2025-02-20
-eredmény: Fejlesztés alatt - korai hozzáférés
+eredmény: Sikeres
 
 --- Mentve fájlba: FxvauuDomRead_output.txt ---
