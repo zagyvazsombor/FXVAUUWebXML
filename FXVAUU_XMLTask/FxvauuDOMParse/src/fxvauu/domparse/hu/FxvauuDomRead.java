@@ -27,8 +27,8 @@ public class FxvauuDomRead {
 
     public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 
-        File xmlFile = new File("../../FXVAUU_XML.xml"); // <-- bemeneti XML
-        File outFile = new File("../../FxvauuDomRead_output.txt"); // <-- kimeneti txt
+        File xmlFile = new File("./FXVAUU_XMLTask/FXVAUU_XML.xml"); // <-- bemeneti XML
+        File outFile = new File("./FXVAUU_XMLTask/FxvauuDomRead_output.txt"); // <-- kimeneti txt
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = factory.newDocumentBuilder();
