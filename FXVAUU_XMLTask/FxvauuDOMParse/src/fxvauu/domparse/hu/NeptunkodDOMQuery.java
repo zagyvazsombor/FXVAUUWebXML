@@ -76,8 +76,8 @@ public class NeptunkodDOMQuery {
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 Element e = (Element) n;
                 Element nev = (Element) e.getElementsByTagName("nev").item(0);
-                String v = (nev != null) ? getText(nev, "vezetek_nev") : "";
-                String k = (nev != null) ? getText(nev, "kereszt_nev") : "";
+                String v = (nev != null) ? getText(nev, "vezeteknev") : "";
+                String k = (nev != null) ? getText(nev, "keresztnev") : "";
                 String teljes = (v + " " + k).trim();
                 if (!teljes.isEmpty())
                     devNevek.add(teljes);

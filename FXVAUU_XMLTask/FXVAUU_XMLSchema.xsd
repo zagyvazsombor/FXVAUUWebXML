@@ -98,6 +98,40 @@
         </xs:unique>
     </xs:element>
 
+    <!-- restriction-->
+    <xs:simpleType name="emailType">
+        <xs:restriction base="xs:string">
+            <!-- legalább 1 karakter @ előtt, legalább 1 a pont előtt és után is -->
+            <xs:pattern value="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="nyelvType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="magyar" />
+            <xs:enumeration value="angol" />
+            <xs:enumeration value="német" />
+            <xs:enumeration value="francia" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="eredmenyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Sikeres" />
+            <xs:enumeration value="Sikertelen" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="korosztalyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PEGI 3" />
+            <xs:enumeration value="PEGI 7" />
+            <xs:enumeration value="PEGI 12" />
+            <xs:enumeration value="PEGI 16" />
+            <xs:enumeration value="PEGI 18" />
+        </xs:restriction>
+
+    </xs:simpleType>
 
     <!-- kommplex tipusok-->
     <xs:complexType name="motorTipus">
@@ -123,9 +157,9 @@
 
     <xs:complexType name="leirasTipus">
         <xs:sequence>
-            <xs:element name="nyelv" type="xs:string" maxOccurs="unbounded"></xs:element>
+            <xs:element name="nyelv" type="nyelvType" maxOccurs="unbounded"></xs:element>
             <xs:element name="tartalom" type="xs:string"></xs:element>
-            <xs:element name="korosztaly" type="xs:string"></xs:element>
+            <xs:element name="korosztaly" type="korosztalyType"></xs:element>
         </xs:sequence>
         <xs:attribute name="l_ID" type="xs:string" use="required"></xs:attribute>
         <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>
@@ -134,7 +168,7 @@
     <xs:complexType name="kiadoTipus">
         <xs:sequence>
             <xs:element name="nev" type="xs:string"></xs:element>
-            <xs:element name="email" type="xs:string"></xs:element>
+            <xs:element name="email" type="emailType"></xs:element>
             <xs:element name="alapitas" type="xs:integer"></xs:element>
             <xs:element name="orszag" type="xs:string"></xs:element>
         </xs:sequence>
@@ -155,15 +189,15 @@
             <xs:element name="nev" type="nevTipus"></xs:element>
             <xs:element name="szerepkor" type="xs:string" maxOccurs="unbounded"></xs:element>
             <xs:element name="tapasztalat" type="xs:integer"></xs:element>
-            <xs:element name="email" type="xs:string"></xs:element>
+            <xs:element name="email" type="emailType"></xs:element>
         </xs:sequence>
         <xs:attribute name="f_ID" type="xs:string" use="required"></xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="nevTipus">
         <xs:sequence>
-            <xs:element name="vezetek_nev" type="xs:string"></xs:element>
-            <xs:element name="kereszt_nev" type="xs:string"></xs:element>
+            <xs:element name="vezeteknev" type="xs:string"></xs:element>
+            <xs:element name="keresztnev" type="xs:string"></xs:element>
         </xs:sequence>
     </xs:complexType>
 
@@ -181,7 +215,7 @@
             <xs:element name="nev" type="nevTipus"></xs:element>
             <xs:element name="specializacio" type="xs:string"></xs:element>
             <xs:element name="tapasztalat" type="xs:integer"></xs:element>
-            <xs:element name="email" type="xs:string"></xs:element>
+            <xs:element name="email" type="emailType"></xs:element>
         </xs:sequence>
         <xs:attribute name="t_ID" type="xs:string" use="required"></xs:attribute>
     </xs:complexType>
@@ -189,7 +223,7 @@
     <xs:complexType name="tesztelesTipus">
         <xs:sequence>
             <xs:element name="datum" type="xs:string"></xs:element>
-            <xs:element name="eredmeny" type="xs:string"></xs:element>
+            <xs:element name="eredmeny" type="eredmenyType"></xs:element>
         </xs:sequence>
         <xs:attribute name="t_ID" type="xs:string" use="required"></xs:attribute>
         <xs:attribute name="j_ID" type="xs:string" use="required"></xs:attribute>

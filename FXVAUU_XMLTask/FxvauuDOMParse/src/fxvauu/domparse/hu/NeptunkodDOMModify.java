@@ -116,8 +116,8 @@ public class NeptunkodDOMModify {
         System.out.println("tesztelo [t_ID=" + t.getAttribute("t_ID") + "]");
         Element nev = (Element) t.getElementsByTagName("nev").item(0);
         if (nev != null) {
-            System.out.println("  vezetek_nev: " + getText(nev, "vezetek_nev"));
-            System.out.println("  kereszt_nev: " + getText(nev, "kereszt_nev"));
+            System.out.println("  vezeteknev: " + getText(nev, "vezeteknev"));
+            System.out.println("  keresztnev: " + getText(nev, "keresztnev"));
         }
         System.out.println("  specializacio: " + getText(t, "specializacio"));
         System.out.println("  tapasztalat: " + getText(t, "tapasztalat"));

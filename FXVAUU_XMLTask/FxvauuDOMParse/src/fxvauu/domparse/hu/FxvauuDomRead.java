@@ -159,7 +159,7 @@ public class FxvauuDomRead {
                     // beágyazott <nev>
                     Element nev = (Element) e.getElementsByTagName("nev").item(0);
                     if (nev != null) {
-                        printlnBoth(pw, "vezetéknév: " + getText(nev, "vezetek_nev"));
+                        printlnBoth(pw, "vezetéknév: " + getText(nev, "vezeteknev"));
                         printlnBoth(pw, "keresztnév: " + getText(nev, "kereszt_nev"));
                     }
 
@@ -202,7 +202,7 @@ public class FxvauuDomRead {
 
                     Element nev = (Element) e.getElementsByTagName("nev").item(0);
                     if (nev != null) {
-                        printlnBoth(pw, "vezetéknév: " + getText(nev, "vezetek_nev"));
+                        printlnBoth(pw, "vezetéknév: " + getText(nev, "vezeteknev"));
                         printlnBoth(pw, "keresztnév: " + getText(nev, "kereszt_nev"));
                     }
                     printlnBoth(pw, "specializáció: " + getText(e, "specializacio"));
