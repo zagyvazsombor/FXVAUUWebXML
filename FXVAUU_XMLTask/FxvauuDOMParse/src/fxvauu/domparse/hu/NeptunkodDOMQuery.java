@@ -17,16 +17,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**
- * NeptunkodDOMQuery.java
- * ----------------------
- * 4 lekérdezés DOM-mal (xPath nélkül) a NeptunkodXML.xml dokumentumra.
- * Minden blokk szépen formázva jelenik meg, és a blokkok után üres sor van.
- *
- * Project: NeptunkodDOMParse
- * Package: neptunkod.domparse.hu
- * Class: NeptunkodDOMQuery
- */
 public class NeptunkodDOMQuery {
 
     public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {

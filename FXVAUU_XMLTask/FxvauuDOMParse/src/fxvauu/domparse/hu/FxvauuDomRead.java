@@ -15,14 +15,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**
- * FxvauuDomRead.java
- * ---------------------
- * A teljes dokumentum (NeptunkodXML.xml) feldolgozása DOM-mal és kiírása
- * "blokk" formában a konzolra, valamint mentés fájlba.
- *
- * A kód szerkezete és stílusa a megadott DOMRead mintát követi.
- */
 public class FxvauuDomRead {
 
     public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
