@@ -25,7 +25,7 @@ public class xPathQueryFxvauu_ {
             // ===== XML betöltése =====
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new File("orarendFXVAUU.xml"));
+            Document doc = builder.parse(new File("./FXVAUU_1112/xPathFXVAUU/orarendFXVAUU.xml"));
             doc.getDocumentElement().normalize();
 
             XPath xpath = XPathFactory.newInstance().newXPath();

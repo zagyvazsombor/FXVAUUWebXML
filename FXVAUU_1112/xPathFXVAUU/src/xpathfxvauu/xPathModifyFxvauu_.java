@@ -23,7 +23,7 @@ public class xPathModifyFxvauu_ {
             // ===== XML betöltése =====
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new File("orarendFXVAUU.xml"));
+            Document doc = builder.parse(new File("./FXVAUU_1112/xPathFXVAUU/orarendFXVAUU.xml"));
             Element root = doc.getDocumentElement();
 
             // ================================================================
@@ -98,7 +98,7 @@ public class xPathModifyFxvauu_ {
 
             transformer.transform(
                     new DOMSource(doc),
-                    new StreamResult(new File("orarendFXVAUU1.xml")));
+                    new StreamResult(new File("./FXVAUU_1112/xPathFXVAUU/orarendFXVAUU1.xml")));
 
             System.out.println("\nFájl mentve: orarendFXVAUU1.xml");
 
