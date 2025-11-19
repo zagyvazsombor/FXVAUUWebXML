@@ -10,7 +10,7 @@ public class JSONReadFxvauu {
 
     public static void main(String[] args) {
 
-        try (FileReader reader = new FileReader("./FXVAUU_1119/JSONParseFXVAUU/orarendFxvauu.json")) {
+        try (FileReader reader = new FileReader("FXVAUU_1119/JSONParseFxvauu/orarendFxvauu.json")) {
             // parse
             JSONParser JSONParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) JSONParser.parse(reader);
