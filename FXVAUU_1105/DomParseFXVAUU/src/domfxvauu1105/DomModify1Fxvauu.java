@@ -1,8 +1,6 @@
 package domfxvauu1105;
 
 import java.io.File;
-import java.lang.annotation.Documented;
-import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

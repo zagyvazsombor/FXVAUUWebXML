@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fxvauu Órarend 2025</title>
+</head>
+
+<body>
+
+    <h2>Fxvauu Órarend 2025</h2>
+
+    <button onclick="loadJSON()">Órarend betöltése</button>
+
+    <div id="output" style="margin-top:20px; white-space: pre-line;"></div>
+
+    <script>
+        function loadJSON() {
+            fetch("orarendFxvauu.json")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Nem találom az orarendNeptunkod.json fájlt.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const out = document.getElementById("output");
+                    out.innerHTML = "";
+
+                    const root = data.FXVAUU_orarend;
+                    const lessons = root.ora;
+
+                    lessons.forEach(lesson => {
+
+                        const time = lesson.idopont;
+
+                        out.innerHTML +=
+                            `Tárgy: ${lesson.targy}\n` +
+                            `Helyszín: ${lesson.helyszin}\n` +
+                            `Oktató: ${lesson.oktato}\n` +
+                            `Szak: ${lesson.szak}\n` +
+                            `Időpont: ${time.nap}, ${time.tol} - ${time.ig}\n` +
+                            "-----------------------------\n";
+                    });
+                })
+                .catch(error => {
+                    document.getElementById("output").innerText = error;
+                });
+        }
+    </script>
+
+</body>
+
+</html>

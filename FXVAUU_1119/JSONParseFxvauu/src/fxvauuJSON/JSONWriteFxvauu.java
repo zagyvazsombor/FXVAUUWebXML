@@ -11,8 +11,8 @@ public class JSONWriteFxvauu {
 
     public static void main(String[] args) {
 
-        String inputPath = "FXVAUU_1119/JSONParseFXVAUU/orarendFxvauu.json";
-        String outputPath = "FXVAUU_1119/JSONParseFXVAUU/orarendFxvauu1.json";
+        String inputPath = "FXVAUU_1119/orarendFxvauu.json";
+        String outputPath = "FXVAUU_1119/orarendFxvauu1.json";
 
         try (FileReader reader = new FileReader(inputPath)) {
 
