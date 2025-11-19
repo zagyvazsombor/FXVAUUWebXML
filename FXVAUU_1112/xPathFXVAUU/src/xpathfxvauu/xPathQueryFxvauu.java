@@ -29,7 +29,7 @@ public class xPathQueryFxvauu {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
             // XML fájl beolvasása
-            Document document = documentBuilder.parse("./studentU7W4RZ.xml");
+            Document document = documentBuilder.parse("./studentFXVAUU.xml");
 
             // Az XML dokumentum normalizálása: eltávolítja a felesleges whitespace
             // karaktereket
