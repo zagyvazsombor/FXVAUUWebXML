@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "FXVAUU_1119/JSONParseFxvauu/lib/json-simple-1.1.1.jar"
+    ]
+}

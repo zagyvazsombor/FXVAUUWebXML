@@ -12,10 +12,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -27,7 +25,7 @@ public class xPathQueryFxvauu_ {
             // ===== XML betöltése =====
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new File("./orarendFXVAUU.xml"));
+            Document doc = builder.parse(new File("orarendFXVAUU.xml"));
             doc.getDocumentElement().normalize();
 
             XPath xpath = XPathFactory.newInstance().newXPath();

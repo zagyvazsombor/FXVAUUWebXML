@@ -1,10 +1,16 @@
 package fxvauuJSON;
 
+import java.io.FileReader;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 public class JSONReadFxvauu {
 
     public static void main(String[] args) {
 
-        try (FileReader reader = new FileReader("././orarendFxvauu.json")) {
+        try (FileReader reader = new FileReader("./orarendFxvauu.json")) {
             // parse
             JSONParser JSONParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) JSONParser.parse(reader);
@@ -23,6 +29,7 @@ public class JSONReadFxvauu {
                 System.out.println("helyszín: " + lesson.get("helyszin"));
                 System.out.println("oktató: " + lesson.get("oktato"));
                 System.out.println("szak: " + lesson.get("szak"));
+                System.out.println("-------------------------");
             }
 
         } catch (Exception e) {
