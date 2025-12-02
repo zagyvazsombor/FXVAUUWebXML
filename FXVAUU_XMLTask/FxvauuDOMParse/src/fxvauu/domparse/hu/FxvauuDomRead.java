@@ -19,32 +19,35 @@ public class FxvauuDomRead {
 
     public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 
-        File xmlFile = new File("./FXVAUU_XMLTask/FXVAUU_XML.xml"); // <-- bemeneti XML
-        File outFile = new File("./FXVAUU_XMLTask/FxvauuDomRead_output.txt"); // <-- kimeneti txt
+        // Bemeneti XML és kimeneti szövegfájl
+        File xmlFile = new File("./FXVAUU_XMLTask/FXVAUU_XML.xml");
+        File outFile = new File("./FXVAUU_XMLTask/FxvauuDomRead_output.txt");
 
+        // DocumentBuilder előkészítése
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = factory.newDocumentBuilder();
 
-        // XML beolvasása DOM-ba
+        // XML beolvasása DOM struktúrába
         Document doc = dBuilder.parse(xmlFile);
         doc.getDocumentElement().normalize();
 
-        // Író a fájlkimenethez
+        // Automatikusan bezáródó writer a kimeneti fájlhoz
         try (PrintWriter pw = new PrintWriter(new FileWriter(outFile, false))) {
 
             // Gyökér elem kiírása
-            String root = doc.getDocumentElement().getNodeName();
-            printlnBoth(pw, "Gyökér elem: " + root);
+            printlnBoth(pw, "Gyökér elem: " + doc.getDocumentElement().getNodeName());
             printlnBoth(pw, "----------------------------------------");
 
-            // ====== Motorok ======
+            // ===== Motor elemek bejárása =====
             NodeList motors = doc.getElementsByTagName("motor");
             for (int i = 0; i < motors.getLength(); i++) {
                 Node n = motors.item(i);
                 printlnBoth(pw, "\nAktuális elem: " + n.getNodeName());
+
                 if (n.getNodeType() == Node.ELEMENT_NODE) {
                     Element e = (Element) n;
 
+                    // Attribútumok és gyerekelemek olvasása
                     String mid = e.getAttribute("m_ID");
                     String nev = getText(e, "nev");
                     String ver = getText(e, "verzio");
@@ -59,7 +62,7 @@ public class FxvauuDomRead {
                 }
             }
 
-            // ====== Játékok ======
+            // ===== Játék elemek feldolgozása =====
             NodeList jatekok = doc.getElementsByTagName("jatek");
             for (int i = 0; i < jatekok.getLength(); i++) {
                 Node n = jatekok.item(i);
@@ -89,11 +92,12 @@ public class FxvauuDomRead {
                 }
             }
 
-            // ====== Leírások ======
+            // ===== Leírások feldolgozása =====
             NodeList leirasok = doc.getElementsByTagName("leiras");
             for (int i = 0; i < leirasok.getLength(); i++) {
                 Node n = leirasok.item(i);
                 printlnBoth(pw, "\nAktuális elem: " + n.getNodeName());
+
                 if (n.getNodeType() == Node.ELEMENT_NODE) {
                     Element e = (Element) n;
 
@@ -234,7 +238,7 @@ public class FxvauuDomRead {
 
     // ===== Segédfüggvények =====
 
-    /** Első tagName gyermek szövegének visszaadása, ha nincs: üres string. */
+    // Gyerek elem szövegének lekérése, ha nincs: üres string
     private static String getText(Element parent, String tagName) {
         if (parent == null)
             return "";
@@ -244,7 +248,7 @@ public class FxvauuDomRead {
         return nl.item(0).getTextContent().trim();
     }
 
-    /** Ugyanazt a sort kiírja a konzolra és a fájlba is. */
+    // Ugyanaz a kiírás konzolra és a fájlba
     private static void printlnBoth(PrintWriter pw, String line) {
         System.out.println(line);
         pw.println(line);

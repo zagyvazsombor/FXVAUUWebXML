@@ -23,24 +23,24 @@ public class NeptunkodDomQuery {
 
         File xmlFile = new File("./FXVAUU_XMLTask/FXVAUU_XML.xml");
 
-        // DOM inicializálás és dokumentum beolvasás
+        // DOM parser létrehozása és XML beolvasása
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = factory.newDocumentBuilder();
         Document doc = dBuilder.parse(xmlFile);
         doc.getDocumentElement().normalize();
 
-        // Fejléc
+        // Gyökérelem kiírása
         printHeader("Gyökér elem: " + doc.getDocumentElement().getNodeName());
 
-        // ===== 1) Motorok nevei listában =====
+        // ==== 1) Motorok neveinek kiolvasása ====
         startBlock("1) Motorok nevei");
         List<String> motorNevek = new ArrayList<>();
-        NodeList motorok = doc.getElementsByTagName("motor");
+        NodeList motorok = doc.getElementsByTagName("motor"); // összes <motor> elem
         for (int i = 0; i < motorok.getLength(); i++) {
             Node n = motorok.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 Element e = (Element) n;
-                String nev = getText(e, "nev");
+                String nev = getText(e, "nev"); // <nev> tartalma
                 if (!nev.isEmpty())
                     motorNevek.add(nev);
             }
@@ -50,7 +50,7 @@ public class NeptunkodDomQuery {
 
         // ===== 2) Játékok: cím + megjelenés éve =====
         startBlock("2) Játékok (cím + megjelenés)");
-        NodeList jatekok = doc.getElementsByTagName("jatek");
+        NodeList jatekok = doc.getElementsByTagName("jatek"); // összes <jatek> elem
         List<String> jatekLista = new ArrayList<>();
         for (int i = 0; i < jatekok.getLength(); i++) {
             Node n = jatekok.item(i);
@@ -66,7 +66,7 @@ public class NeptunkodDomQuery {
         System.out.println("Játékok: " + asList(jatekLista));
         endBlock();
 
-        // ===== 3) Fejlesztők teljes nevei =====
+        // ==== 3) Fejlesztők teljes neve ====
         startBlock("3) Fejlesztők teljes nevei");
         NodeList fejlesztok = doc.getElementsByTagName("fejleszto");
         List<String> devNevek = new ArrayList<>();
@@ -74,6 +74,7 @@ public class NeptunkodDomQuery {
             Node n = fejlesztok.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 Element e = (Element) n;
+                // <fejleszto><nev><vezeteknev>...</> <keresztnev>...</></nev></fejleszto>
                 Element nev = (Element) e.getElementsByTagName("nev").item(0);
                 String v = (nev != null) ? getText(nev, "vezeteknev") : "";
                 String k = (nev != null) ? getText(nev, "keresztnev") : "";
@@ -87,7 +88,8 @@ public class NeptunkodDomQuery {
 
         // ===== 4) Összetett: Kiadási adatok játékcímmel és kiadó nevével =====
         startBlock("4) Kiadások (játékcím + kiadó + dátum + ár)");
-        // Előkészítünk egy "join"-t DOM-ból: j_ID->cím, k_ID->kiadó név
+
+        // Játékok előtöltése ID alapján: j_ID -> cím
         Map<String, String> jatekCimById = new LinkedHashMap<>();
         for (int i = 0; i < jatekok.getLength(); i++) {
             Element e = (Element) jatekok.item(i);
@@ -97,6 +99,7 @@ public class NeptunkodDomQuery {
                 jatekCimById.put(jId, cim);
         }
 
+        // Kiadók előtöltése: k_ID -> név
         Map<String, String> kiadoNevById = new LinkedHashMap<>();
         NodeList kiadok = doc.getElementsByTagName("kiado");
         for (int i = 0; i < kiadok.getLength(); i++) {
@@ -107,11 +110,13 @@ public class NeptunkodDomQuery {
                 kiadoNevById.put(kId, nev);
         }
 
+        // Kiadások bejárása (join XML-en belül)
         NodeList kiadasok = doc.getElementsByTagName("kiadas");
         for (int i = 0; i < kiadasok.getLength(); i++) {
             Element e = (Element) kiadasok.item(i);
-            String kId = e.getAttribute("k_ID");
-            String jId = e.getAttribute("j_ID");
+
+            String kId = e.getAttribute("k_ID"); // idegen kulcs
+            String jId = e.getAttribute("j_ID"); // idegen kulcs
             String datum = getText(e, "datum");
             String ar = getText(e, "ar");
 
@@ -124,7 +129,6 @@ public class NeptunkodDomQuery {
     }
 
     // ===== Segédfüggvények a szép blokkos kiíráshoz =====
-
     private static void printHeader(String title) {
         System.out.println("========================================");
         System.out.println(title);
