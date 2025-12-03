@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FXVAUU IndexedDB - Tulajdonos & Autó</title>
+<style>
+  :root{--card-bg:#fff;--accent:#176fb4}
+  body{font-family:Arial,Helvetica,sans-serif;margin:18px;background:#f5f7fb;color:#222}
+  h1{margin:0 0 14px}
+  .layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  .card{background:var(--card-bg);border:1px solid #ddd;padding:14px;border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+  form .row{margin-bottom:8px}
+  label{display:block;font-weight:600;font-size:13px;margin-bottom:4px}
+  input[type=text], input[type=number], select{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+  button{background:var(--accent);color:#fff;border:0;padding:8px 10px;border-radius:4px;cursor:pointer}
+  button.ghost{background:#6c757d}
+  .list{margin-top:10px}
+  .item{padding:8px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+  .meta{font-size:13px;color:#333}
+  .small{font-size:13px;color:#555}
+  .actions button{margin-left:6px;padding:6px 8px;font-size:13px}
+  .controls{margin-top:12px;border-top:1px dashed #eee;padding-top:10px}
+  .export-wrap{margin-top:18px}
+  .notice{font-size:13px;color:#666;margin-top:6px}
+  @media (max-width:900px){ .layout{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+  <h1>FXVAUU IndexedDB - Tulajdonos & Autó</h1>
+
+  <div class="layout">
+    <!-- Tulajdonos panel -->
+    <div class="card" id="ownerCard">
+      <h2>Tulajdonos</h2>
+      <form id="ownerForm">
+        <input type="hidden" id="ownerId">
+        <div class="row"><label for="ownerNev">Név</label><input id="ownerNev" type="text" required></div>
+        <div class="row"><label for="ownerCim">Cím</label><input id="ownerCim" type="text"></div>
+        <div class="row"><label for="ownerTel">Telefon</label><input id="ownerTel" type="text"></div>
+        <div class="row">
+          <button type="submit" id="addOwnerBtn">Tulajdonos hozzáadása</button>
+          <button type="button" id="cancelOwner" class="ghost" style="display:none">Mégse</button>
+        </div>
+      </form>
+
+      <div style="margin-top:10px">
+        <label for="ownerSearch">Keresés (név):</label>
+        <input id="ownerSearch" type="text" placeholder="Név szerint">
+      </div>
+
+      <div class="list" id="ownersList">
+        <p class="small">Összes tulajdonos megjelenítése alul.</p>
+      </div>
+    </div>
+
+    <!-- Autó panel -->
+    <div class="card" id="carCard">
+      <h2>Autó</h2>
+      <form id="carForm">
+        <input type="hidden" id="carId">
+        <div class="row"><label for="rendszam">Rendszám</label><input id="rendszam" type="text" required></div>
+        <div class="row"><label for="tipus">Típus</label><input id="tipus" type="text"></div>
+        <div class="row"><label for="szin">Szín</label><input id="szin" type="text"></div>
+        <div class="row"><label for="kor">Kor (év)</label><input id="kor" type="number" min="0"></div>
+        <div class="row"><label for="ar">Ár (Ft)</label><input id="ar" type="number" min="0"></div>
+        <div class="row">
+          <label for="tulajSelect">Tulaj</label>
+          <select id="tulajSelect"><option value="">-- Válassz tulajdonost --</option></select>
+        </div>
+        <div class="row">
+          <button type="submit" id="addCarBtn">Autó hozzáadása</button>
+          <button type="button" id="cancelCar" class="ghost" style="display:none">Mégse</button>
+        </div>
+      </form>
+
+      <div style="margin-top:10px">
+        <label for="carSearch">Keresés</label>
+        <input id="carSearch" type="text" placeholder="pl. ABC-123 vagy Toyota">
+      </div>
+
+      <div style="margin-top:8px">
+        <label for="filterOwner">Szűrés</label>
+        <select id="filterOwner"><option value="">Összes tulajdonos</option></select>
+      </div>
+
+      <div class="list" id="carsList" style="margin-top:10px">
+        <p class="small">Autók listája megjelenik itt.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card export-wrap">
+    <h3>Adatok mentése és betöltése</h3>
+    <div>
+      <button id="exportBtn">Exportálás JSON fájlba</button>
+      <input type="file" id="importFile" accept="application/json" style="margin-left:12px">
+      <button id="importBtn" class="ghost" style="margin-left:8px">Importálás JSON-ból (felülírja DB-t)</button>
+    </div>
+    <p class="notice">Export a teljes tulajdonos+autó adatbázist menti JSON-be. Import a kiválasztott fájl tartalmát betölti és felülírja a jelenlegi adatbázist.</p>
+  </div>
+
+<script>
+/* indexedDB helper (promise alapú egyszerű wrapper) */
+const DB_NAME = 'AutoTulajDB_v1';
+const DB_VERSION = 1;
+const STORE_OWNERS = 'owners';
+const STORE_CARS = 'cars';
+let db = null;
+
+function openDB(){
+  return new Promise((resolve, reject) => {
+    if(db) return resolve(db);
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const idb = e.target.result;
+      if(!idb.objectStoreNames.contains(STORE_OWNERS)){
+        idb.createObjectStore(STORE_OWNERS, { keyPath: 'id', autoIncrement: true });
+      }
+      if(!idb.objectStoreNames.contains(STORE_CARS)){
+        const cs = idb.createObjectStore(STORE_CARS, { keyPath: 'id', autoIncrement: true });
+        cs.createIndex('tulajId', 'tulajId', { unique: false });
+        cs.createIndex('rendszam', 'rendszam', { unique: true });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function tx(storeNames, mode='readonly'){
+  return openDB().then(database => database.transaction(storeNames, mode));
+}
+
+function add(store, value){
+  return tx([store], 'readwrite').then(t => new Promise((res, rej) => {
+    const r = t.objectStore(store).add(value);
+    r.onsuccess = ()=> res(r.result);
+    r.onerror = ()=> rej(r.error);
+  }));
+}
+
+function put(store, value){
+  return tx([store], 'readwrite').then(t => new Promise((res, rej) => {
+    const r = t.objectStore(store).put(value);
+    r.onsuccess = ()=> res(r.result);
+    r.onerror = ()=> rej(r.error);
+  }));
+}
+
+function getAll(store){
+  return tx([store]).then(t => new Promise((res, rej) => {
+    const r = t.objectStore(store).getAll();
+    r.onsuccess = ()=> res(r.result);
+    r.onerror = ()=> rej(r.error);
+  }));
+}
+
+function getByIndex(store, indexName, key){
+  return tx([store]).then(t => new Promise((res, rej) => {
+    const req = t.objectStore(store).index(indexName).getAll(key);
+    req.onsuccess = ()=> res(req.result);
+    req.onerror = ()=> rej(req.error);
+  }));
+}
+
+function getOne(store, key){
+  return tx([store]).then(t => new Promise((res, rej) => {
+    const req = t.objectStore(store).get(key);
+    req.onsuccess = ()=> res(req.result);
+    req.onerror = ()=> rej(req.error);
+  }));
+}
+
+function del(store, key){
+  return tx([store], 'readwrite').then(t => new Promise((res, rej) => {
+    const r = t.objectStore(store).delete(key);
+    r.onsuccess = ()=> res();
+    r.onerror = ()=> rej(r.error);
+  }));
+}
+
+function clearStore(store){
+  return tx([store], 'readwrite').then(t => new Promise((res, rej) => {
+    const r = t.objectStore(store).clear();
+    r.onsuccess = ()=> res();
+    r.onerror = ()=> rej(r.error);
+  }));
+}
+
+/* UI elemek */
+const ownerForm = document.getElementById('ownerForm');
+const ownerId = document.getElementById('ownerId');
+const ownerNev = document.getElementById('ownerNev');
+const ownerCim = document.getElementById('ownerCim');
+const ownerTel = document.getElementById('ownerTel');
+const addOwnerBtn = document.getElementById('addOwnerBtn');
+const cancelOwner = document.getElementById('cancelOwner');
+const ownerSearch = document.getElementById('ownerSearch');
+const ownersList = document.getElementById('ownersList');
+
+const carForm = document.getElementById('carForm');
+const carId = document.getElementById('carId');
+const rendszam = document.getElementById('rendszam');
+const tipus = document.getElementById('tipus');
+const szin = document.getElementById('szin');
+const kor = document.getElementById('kor');
+const ar = document.getElementById('ar');
+const tulajSelect = document.getElementById('tulajSelect');
+const addCarBtn = document.getElementById('addCarBtn');
+const cancelCar = document.getElementById('cancelCar');
+const carSearch = document.getElementById('carSearch');
+const filterOwner = document.getElementById('filterOwner');
+const carsList = document.getElementById('carsList');
+
+const exportBtn = document.getElementById('exportBtn');
+const importFile = document.getElementById('importFile');
+const importBtn = document.getElementById('importBtn');
+
+/* Inicializálás */
+(async function init(){
+  await openDB();
+  await seedIfEmpty(); // feltöltünk mintrekordokat, ha üres
+  refreshOwners();
+  refreshCars();
+})();
+
+/* Seed: legalább minimális rekordok (ha üres) */
+async function seedIfEmpty(){
+  const owners = await getAll(STORE_OWNERS);
+  const cars = await getAll(STORE_CARS);
+  if(owners.length === 0 && cars.length === 0){
+    // kis minta
+    const id1 = await add(STORE_OWNERS, { nev:'Kovács Béla', cim:'Petőfi u. 1', telefon:'+36-30-111-2222' });
+    const id2 = await add(STORE_OWNERS, { nev:'Nagy Anna', cim:'Széchenyi tér 5', telefon:'+36-20-333-4444' });
+    await add(STORE_CARS, { rendszam:'ABC-123', tipus:'Toyota', szin:'kék', kor:5, ar:900000, tulajId: id1 });
+    await add(STORE_CARS, { rendszam:'XYZ-999', tipus:'Suzuki', szin:'piros', kor:3, ar:650000, tulajId: id2 });
+  }
+}
+
+/* Tulajdonos CRUD és lista */
+ownerForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const id = ownerId.value ? Number(ownerId.value) : null;
+  const data = { nev: ownerNev.value.trim(), cim: ownerCim.value.trim(), telefon: ownerTel.value.trim() };
+  try{
+    if(id){
+      data.id = id;
+      await put(STORE_OWNERS, data);
+    } else {
+      await add(STORE_OWNERS, data);
+    }
+    ownerForm.reset();
+    ownerId.value = '';
+    cancelOwner.style.display = 'none';
+    addOwnerBtn.textContent = 'Tulajdonos hozzáadása';
+    refreshOwners();
+    refreshCars();
+  }catch(err){ alert('Hiba mentéskor: ' + err.message); }
+});
+
+cancelOwner.addEventListener('click', () => {
+  ownerForm.reset();
+  ownerId.value = '';
+  cancelOwner.style.display = 'none';
+  addOwnerBtn.textContent = 'Tulajdonos hozzáadása';
+});
+
+ownerSearch.addEventListener('input', refreshOwners);
+
+async function refreshOwners(){
+  const q = ownerSearch.value.trim().toLowerCase();
+  const list = await getAll(STORE_OWNERS);
+  const filtered = q ? list.filter(o => (o.nev||'').toLowerCase().includes(q)) : list;
+  ownersList.innerHTML = '';
+  if(filtered.length === 0){
+    ownersList.innerHTML = '<p class="small">Nincs megjeleníthető tulajdonos.</p>';
+  } else {
+    filtered.forEach(o => {
+      const div = document.createElement('div'); div.className='item';
+      const left = document.createElement('div'); left.innerHTML = `<div style="font-weight:700">${escape(o.nev)}</div><div class="small">${escape(o.cim)} ${escape(o.telefon)}</div>`;
+      const right = document.createElement('div'); right.className='actions';
+      const edit = document.createElement('button'); edit.textContent = 'Módosít'; edit.className='ghost';
+      const rem = document.createElement('button'); rem.textContent = 'Töröl'; rem.style.background='#c82333';
+      edit.onclick = ()=> loadOwnerToForm(o);
+      rem.onclick = async ()=> { if(confirm('Biztosan törlöd a tulajdonost? A hozzá tartozó autók is törlődnek.')){ await deleteOwnerAndCars(o.id); refreshOwners(); refreshCars(); } };
+      right.appendChild(edit); right.appendChild(rem);
+      div.appendChild(left); div.appendChild(right);
+      ownersList.appendChild(div);
+    });
+  }
+  // frissítjük a tulaj selecteket a car formban
+  populateOwnerSelects(list);
+}
+
+async function loadOwnerToForm(o){
+  ownerId.value = o.id;
+  ownerNev.value = o.nev;
+  ownerCim.value = o.cim;
+  ownerTel.value = o.telefon;
+  cancelOwner.style.display = 'inline-block';
+  addOwnerBtn.textContent = 'Mentés (módosítás)';
+}
+
+async function deleteOwnerAndCars(ownerIdVal){
+  // töröljük a tulajt
+  await del(STORE_OWNERS, ownerIdVal);
+  // és a kapcsolódó autókat (keressük index alapján)
+  const related = await getByIndex(STORE_CARS, 'tulajId', ownerIdVal);
+  await Promise.all(related.map(r => del(STORE_CARS, r.id)));
+}
+
+/* Autó CRUD és lista */
+carForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const id = carId.value ? Number(carId.value) : null;
+  const ownerVal = tulajSelect.value ? Number(tulajSelect.value) : null;
+  if(!ownerVal){ alert('Válassz tulajdonost!'); return; }
+  const data = {
+    rendszam: rendszam.value.trim(),
+    tipus: tipus.value.trim(),
+    szin: szin.value.trim(),
+    kor: kor.value ? Number(kor.value) : null,
+    ar: ar.value ? Number(ar.value) : null,
+    tulajId: ownerVal
+  };
+  try{
+    if(id){
+      data.id = id;
+      await put(STORE_CARS, data);
+    } else {
+      await add(STORE_CARS, data);
+    }
+    carForm.reset();
+    carId.value = '';
+    cancelCar.style.display = 'none';
+    addCarBtn.textContent = 'Autó hozzáadása';
+    refreshCars();
+  }catch(err){ alert('Hiba autó mentésekor: ' + err.message); }
+});
+
+cancelCar.addEventListener('click', ()=> {
+  carForm.reset(); carId.value=''; cancelCar.style.display='none'; addCarBtn.textContent='Autó hozzáadása';
+});
+
+carSearch.addEventListener('input', refreshCars);
+filterOwner.addEventListener('change', refreshCars);
+
+async function refreshCars(){
+  const q = carSearch.value.trim().toLowerCase();
+  const ownerFilter = filterOwner.value ? Number(filterOwner.value) : null;
+  let list = await getAll(STORE_CARS);
+  // filter owner
+  if(ownerFilter) list = list.filter(c=> c.tulajId === ownerFilter);
+  // keresés rendszám/típus/szín
+  if(q) list = list.filter(c => (c.rendszam||'').toLowerCase().includes(q) || (c.tipus||'').toLowerCase().includes(q) || (c.szin||'').toLowerCase().includes(q));
+  carsList.innerHTML = '';
+  if(list.length === 0){
+    carsList.innerHTML = '<p class="small">Nincs megjeleníthető autó.</p>';
+  } else {
+    // választjuk ki a tulaj nevét (költséges, de kis DB-n ok)
+    const owners = await getAll(STORE_OWNERS);
+    const ownersMap = Object.fromEntries(owners.map(o=>[o.id,o]));
+    list.forEach(c => {
+      const div = document.createElement('div'); div.className='item';
+      const left = document.createElement('div'); left.innerHTML = `<div style="font-weight:700">${escape(c.rendszam)} — ${escape(c.tipus)}</div>
+        <div class="small">Szín: ${escape(c.szin)} • Kor: ${escape(c.kor)} • Ár: ${escape(c.ar)}</div>
+        <div class="small">Tulaj: ${escape(ownersMap[c.tulajId]?.nev || 'ismeretlen')}</div>`;
+      const right = document.createElement('div'); right.className='actions';
+      const edit = document.createElement('button'); edit.textContent = 'Módosít'; edit.className='ghost';
+      const rem = document.createElement('button'); rem.textContent = 'Töröl'; rem.style.background='#c82333';
+      edit.onclick = ()=> loadCarToForm(c);
+      rem.onclick = async ()=> { if(confirm('Biztosan törlöd az autót?')){ await del(STORE_CARS, c.id); refreshCars(); } };
+      right.appendChild(edit); right.appendChild(rem);
+      div.appendChild(left); div.appendChild(right);
+      carsList.appendChild(div);
+    });
+  }
+}
+
+function loadCarToForm(c){
+  carId.value = c.id;
+  rendszam.value = c.rendszam;
+  tipus.value = c.tipus;
+  szin.value = c.szin;
+  kor.value = c.kor;
+  ar.value = c.ar;
+  tulajSelect.value = c.tulajId;
+  addCarBtn.textContent = 'Mentés (módosítás)';
+  cancelCar.style.display = 'inline-block';
+}
+
+/* Segédfüggvények */
+function escape(s){ if(s==null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+async function populateOwnerSelects(list){
+  // list: teljes tulaj lista (ha nincs megadva, lekérjük)
+  let owners = list;
+  if(!owners) owners = await getAll(STORE_OWNERS);
+  // tulajSelect (car form)
+  tulajSelect.innerHTML = '<option value=\"\">-- Válassz tulajdonost --</option>';
+  filterOwner.innerHTML = '<option value=\"\">Összes tulajdonos</option>';
+  owners.forEach(o => {
+    const opt = document.createElement('option'); opt.value = o.id; opt.textContent = o.nev; tulajSelect.appendChild(opt);
+    const opt2 = document.createElement('option'); opt2.value = o.id; opt2.textContent = o.nev; filterOwner.appendChild(opt2);
+  });
+}
+
+/* Exportálás JSON letöltés */
+exportBtn.addEventListener('click', async () => {
+  try{
+    const owners = await getAll(STORE_OWNERS);
+    const cars = await getAll(STORE_CARS);
+    const data = { owners, cars };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'autotulaj_export_'+(new Date().toISOString().slice(0,10))+'.json';
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }catch(err){ alert('Export hiba: '+err.message); }
+});
+
+/* Importálás (felülírja DB-t) */
+importBtn.addEventListener('click', async () => {
+  const f = importFile.files[0];
+  if(!f){ alert('Válassz egy JSON fájlt előbb'); return; }
+  if(!confirm('Az import FELÜLÍRJA a jelenlegi adatbázist. Folytatod?')) return;
+  const text = await f.text();
+  try{
+    const parsed = JSON.parse(text);
+    if(!parsed || !Array.isArray(parsed.owners) || !Array.isArray(parsed.cars)) throw new Error('A fájl nem a várt struktúrájú (owners és cars tömbök kellenek).');
+    // clear stores
+    await clearStore(STORE_CARS);
+    await clearStore(STORE_OWNERS);
+    // insert owners (megtartjuk az id mezőt, put-tal)
+    for(const o of parsed.owners){
+      // ha nincs id, csak put-tal kerül automatikusan autoincrementre
+      await put(STORE_OWNERS, { id: o.id, nev: o.nev||'', cim: o.cim||'', telefon: o.telefon||'' });
+    }
+    // insert cars (tulajId-nek feltételezzük, hogy illeszkedik)
+    for(const c of parsed.cars){
+      await put(STORE_CARS, { id: c.id, rendszam: c.rendszam||'', tipus: c.tipus||'', szin: c.szin||'', kor: c.kor||null, ar: c.ar||null, tulajId: c.tulajId||null });
+    }
+    alert('Import sikeres.');
+    refreshOwners();
+    refreshCars();
+  }catch(err){ alert('Import hiba: ' + err.message); }
+});
+
+/* Ha a file input változik, automatikusan engedi az import gombot (opcionális) */
+importFile.addEventListener('change', () => {
+  // nincs semmi extra, import gomb mindig aktív — csak választani kell a fájlt
+});
+
+/* Ha frissítés kell a tulaj selecteknél (amikor owners változnak) */
+async function refreshOwnersAndSelects(){
+  const list = await getAll(STORE_OWNERS);
+  populateOwnerSelects(list);
+}
+
+/* figyelők: amikor owners/frissítések történnek, frissítjük a selecteket */
+const origPut = put;
+put; // no-op to keep eslint happy
+
+// Kisebb kényelem: ha owners változhatnak, mindenki frissít
+// (már hívjuk explicit refreshOwners(), refreshCars() a műveleteknél)
+
+</script>
+</body>
+</html>

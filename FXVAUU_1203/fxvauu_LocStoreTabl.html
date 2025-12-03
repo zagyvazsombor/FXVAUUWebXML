@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FXVAUU Órarend - Táblázat</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;padding:18px;background:#fff}
+  .controls{margin-bottom:12px}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #ddd;padding:8px;text-align:left}
+  th{background:#f0f0f0}
+  .btn{padding:6px 10px;border-radius:4px;border:0;background:#2d8cf0;color:#fff;cursor:pointer}
+  .empty{padding:10px;background:#f9f9f9;border:1px solid #eee;border-radius:4px}
+</style>
+</head>
+<body>
+  <h1>FXVAUU Órarend JSON (Táblázat)</h1>
+
+  <div class="controls">
+    <input type="file" id="fileIn" accept="application/json">
+    <button id="loadLs" class="btn">LocalStorage betöltése</button>
+  </div>
+
+  <table id="tbl">
+    <thead>
+      <tr><th>Tárgy</th><th>Nap</th><th>Tól</th><th>Ig</th><th>Helyszín</th><th>Oktató</th><th>Szak</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<script>
+const STORAGE_KEY = 'orarend_fxvauu';
+let schedule = [];
+const tbody = document.querySelector('#tbl tbody');
+
+function esc(s){ if(s==null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+function extractOraArray(parsed){
+  if(!parsed || typeof parsed !== 'object') return [];
+  if(parsed.FXVAUU_orarend && Array.isArray(parsed.FXVAUU_orarend.ora)) return parsed.FXVAUU_orarend.ora;
+  if(parsed.orarend && Array.isArray(parsed.orarend.ora)) return parsed.orarend.ora;
+  if(Array.isArray(parsed.ora)) return parsed.ora;
+  if(Array.isArray(parsed.FXVAUU_orarend)) return parsed.FXVAUU_orarend;
+  return [];
+}
+
+function renderTable(){
+  tbody.innerHTML = '';
+  if(!schedule.length){
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Nincs adat. Tölts be egy JSON fájlt vagy használd a \"LocalStorage betöltése\" gombot, ha korábban mentettél.</td></tr>';
+    return;
+  }
+  schedule.forEach(it=>{
+    // rugalmas nap/tól/ig kezelés
+    const nap = (it.idopont && (it.idopont.nap || it.idopont.Nap)) ? (it.idopont.nap || it.idopont.Nap) : (it.nap || '');
+    const tol = (it.idopont && (it.idopont.tol !== undefined)) ? it.idopont.tol : '';
+    const ig = (it.idopont && (it.idopont.ig !== undefined)) ? it.idopont.ig : '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${esc(it.targy)}</td><td>${esc(nap)}</td><td>${esc(tol)}</td><td>${esc(ig)}</td><td>${esc(it.helyszin)}</td><td>${esc(it.oktato)}</td><td>${esc(it.szak)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// Fájl betöltés - csak megjelenít (nem ment LS-be automatikusan)
+document.getElementById('fileIn').addEventListener('change', function(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = function(evt){
+    try{
+      const j = JSON.parse(evt.target.result);
+      const arr = extractOraArray(j);
+      if(!Array.isArray(arr) || arr.length === 0){
+        alert('A fájl nem tartalmaz óra tömböt (ellenőrizd a JSON szerkezetét).');
+        schedule = [];
+        renderTable();
+        return;
+      }
+      schedule = arr.map(x=>({
+        targy: x.targy || '',
+        idopont: x.idopont || {nap:'', tol:'', ig:''},
+        helyszin: x.helyszin || '',
+        oktato: x.oktato || '',
+        szak: x.szak || ''
+      }));
+      renderTable();
+    }catch(err){
+      alert('Hiba a fájl olvasásakor: ' + err.message);
+      schedule = [];
+      renderTable();
+    }
+  };
+  r.readAsText(f, 'utf-8');
+  e.target.value = ''; // lehetővé teszi ugyanazon fájl újbóli kiválasztását
+});
+
+// LocalStorage betöltés - csak ez a gomb írhatja felül a schedule változót
+document.getElementById('loadLs').addEventListener('click', function(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw){ alert('Nincs adat a LocalStorage-ben. Előbb töltsd be a JSON fájlt és mentsd el, ha szükséges.'); return; }
+  try{
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr)) throw new Error('LocalStorage nem tömböt tartalmaz.');
+    schedule = arr.map(x=>({
+      targy: x.targy || '',
+      idopont: x.idopont || {nap:'', tol:'', ig:''},
+      helyszin: x.helyszin || '',
+      oktato: x.oktato || '',
+      szak: x.szak || ''
+    }));
+    renderTable();
+  }catch(e){
+    alert('Hiba a LocalStorage olvasásakor: ' + e.message);
+  }
+});
+
+// init - ha van LS, automatikusan betölti (nem kötelező)
+(function init(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{ const arr = JSON.parse(raw); if(Array.isArray(arr)) schedule = arr; } catch(e){ schedule = []; }
+  }
+  renderTable();
+})();
+</script>
+</body>
+</html>

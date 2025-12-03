@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FXVAUU Órarend - Lista</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;padding:18px;background:#f4f4f4}
+  .card{background:#fff;border:1px solid #ddd;padding:12px;border-radius:6px;margin-bottom:12px}
+  .controls{margin-bottom:12px}
+  input[type=file]{display:inline-block}
+  button{padding:6px 10px;border-radius:4px;border:0;cursor:pointer}
+  .btn{background:#2d8cf0;color:#fff}
+  .item{border-left:6px solid #2d8cf0;padding:10px;margin-bottom:10px;border-radius:4px;background:#fff}
+  h2{margin:6px 0}
+  .meta{font-size:13px;color:#333}
+  .empty{padding:12px;background:#fff;border:1px solid #eee;border-radius:6px}
+</style>
+</head>
+<body>
+  <h1>FXVAUU Órarend JSON (Lista)</h1>
+
+  <div class="card controls">
+    <input type="file" id="fileInput" accept="application/json">
+    <button id="loadLs" class="btn">LocalStorage betöltése</button>
+    <br><br>
+    <label for="search">Keresés tárgy szerint:</label>
+    <input type="text" id="search" placeholder="pl. Web technológiák">
+  </div>
+
+  <div id="list"></div>
+
+<script>
+const STORAGE_KEY = 'orarend_fxvauu';
+let schedule = [];
+
+// Biztos, hogy mindig találjuk meg az ora tömböt a különböző JSON variánsokban
+function extractOraArray(parsed){
+  if(!parsed || typeof parsed !== 'object') return [];
+  // lehetséges helyek, sorban ellenőrizve
+  if(parsed.FXVAUU_orarend && Array.isArray(parsed.FXVAUU_orarend.ora)) return parsed.FXVAUU_orarend.ora;
+  if(parsed.orarend && Array.isArray(parsed.orarend.ora)) return parsed.orarend.ora;
+  if(Array.isArray(parsed.ora)) return parsed.ora;
+  // esetleg közvetlen orarend mező név nélküli
+  if(Array.isArray(parsed.FXVAUU_orarend)) return parsed.FXVAUU_orarend;
+  return [];
+}
+
+function renderList(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const wrap = document.getElementById('list');
+  wrap.innerHTML = '';
+  const arr = schedule.filter(x => !q || (x.targy||'').toLowerCase().includes(q));
+  if(arr.length === 0){
+    wrap.innerHTML = '<div class="empty">Nincs találat vagy még nem töltöttél be adatot. Húzz be egy JSON fájlt, vagy kattints a \"LocalStorage betöltése\" gombra, ha korábban mentetted.</div>';
+    return;
+  }
+  arr.forEach(it =>{
+    const div = document.createElement('div'); div.className='item';
+    const nap = (it.idopont && (it.idopont.nap || it.idopont.Nap)) ? (it.idopont.nap || it.idopont.Nap) : (it.nap || '');
+    const tol = (it.idopont && (it.idopont.tol !== undefined)) ? it.idopont.tol : '';
+    const ig = (it.idopont && (it.idopont.ig !== undefined)) ? it.idopont.ig : '';
+    div.innerHTML = `<h2>${escapeHtml(it.targy)}</h2>
+      <div class="meta">Nap: ${escapeHtml(nap)}<br>
+      Idő: ${escapeHtml(tol)} - ${escapeHtml(ig)}<br>
+      Helyszín: ${escapeHtml(it.helyszin)}<br>
+      Oktató: ${escapeHtml(it.oktato)}<br>
+      Szak: ${escapeHtml(it.szak)}</div>`;
+    wrap.appendChild(div);
+  });
+}
+
+function escapeHtml(s){ if(s==null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+// Fájl beolvasás
+document.getElementById('fileInput').addEventListener('change', function(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = function(evt){
+    try{
+      const j = JSON.parse(evt.target.result);
+      const arr = extractOraArray(j);
+      if(!Array.isArray(arr) || arr.length === 0) {
+        alert('A fájl nem tartalmazható óra tömböt (ellenőrizd a JSON szerkezetét).');
+        return;
+      }
+      // Normálizálás: minden elemhez legyen idopont objektum
+      schedule = arr.map(x => ({
+        tipus: x.tipus || '',
+        targy: x.targy || '',
+        idopont: x.idopont || { nap: '', tol: '', ig: '' },
+        helyszin: x.helyszin || '',
+        oktato: x.oktato || '',
+        szak: x.szak || ''
+      }));
+      // automatikus mentés LS-be (kényelmi funkció, törölhető ha nem kell)
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(schedule)); } catch(e){}
+      renderList();
+    }catch(err){
+      alert('Hiba a fájl olvasásakor: ' + err.message);
+    }
+  };
+  r.readAsText(f,'utf-8');
+  // ürítsük ki az inputot, hogy újra lehessen ugyanazt a fájlt választani
+  e.target.value = '';
+});
+
+// LocalStorage betöltése (egy gomb)
+document.getElementById('loadLs').addEventListener('click', function(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw){ alert('Nincs adat a LocalStorage-ben (először töltsd be a JSON fájlt és mentsd LS-be).'); return; }
+  try {
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr)) throw new Error('LocalStorage nem tömböt tartalmaz');
+    schedule = arr.map(x => ({
+      tipus: x.tipus || '',
+      targy: x.targy || '',
+      idopont: x.idopont || { nap: '', tol: '', ig: '' },
+      helyszin: x.helyszin || '',
+      oktato: x.oktato || '',
+      szak: x.szak || ''
+    }));
+    renderList();
+  } catch(e){
+    alert('Hiba a LocalStorage olvasásakor: ' + e.message);
+  }
+});
+
+// Keresés realtime
+document.getElementById('search').addEventListener('input', renderList);
+
+// Inicializálás: ha van LS, töltsd be automatikusan (de ne kötelező)
+(function init(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{ const arr = JSON.parse(raw); if(Array.isArray(arr)) schedule = arr; } catch(e){ schedule = []; }
+  }
+  renderList();
+})();
+</script>
+</body>
+</html>
