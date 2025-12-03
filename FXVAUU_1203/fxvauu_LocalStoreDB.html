@@ -1,29 +1,403 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalStorage</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NEPTUNKOD Hallgatók - LocalStorage</title>
+  <style>
+    /* Egyszerû, tiszta CSS a minta alapján */
+    body{font-family: Arial, Helvetica, sans-serif;background:#f6f6f6;color:#222;padding:20px}
+    .container{max-width:1000px;margin:0 auto}
+    h1{font-size:22px;margin-bottom:10px}
+    form.card, .card{background:#fff;border:1px solid #ddd;border-radius:4px;padding:14px;margin-bottom:16px}
+    label{display:inline-block;width:110px;font-weight:600}
+    input[type=text], input[type=number], select{padding:6px;border:1px solid #ccc;border-radius:3px;width:220px}
+    .row{margin-bottom:10px}
+    button{padding:6px 10px;border-radius:4px;border:0;cursor:pointer}
+    button.save{background:#28a745;color:#fff}
+    button.cancel{background:#6c757d;color:#fff;margin-left:6px}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th, td{border:1px solid #e5e5e5;padding:8px;text-align:left;font-size:14px}
+    th{background:#f0f0f0}
+    .actions button{margin-right:6px}
+    .btn-edit{background:#17a2b8;color:#fff}
+    .btn-delete{background:#dc3545;color:#fff}
+    .controls{display:flex;gap:12px;align-items:center}
+    .small{font-size:13px}
+    .import-input{display:inline-block}
+    .msg{padding:8px;background:#fff3cd;border:1px solid #ffeeba;border-radius:4px;margin-bottom:12px}
+    @media (max-width:720px){label{display:block;width:100%;margin-bottom:6px} input[type=text], input[type=number], select{width:100%}}
+  </style>
 </head>
-
 <body>
-    <div>
-    <form action="" title="Új hallgató hozzáadása">
-        <label for="név"> Név</label>
-        <input type="text" id="név" name="név" required><br><br>
-        <label for="Évfolyam">Évfolyam</label>
-        <input type="number" min="1" max="8" id="évfolyam" name="évfolyam" required><br><br>
-        <label for="szak">Szak</label>
-        <input type="text" id="szak" name="szak" required><br><br>
-        <label for="email">E-mail</label>
-        <input type="text" id="email" name="email" required><br><br>
-        <label for="neptunkod">NEPTUN kód</label>
-        <input type="text" id="neptunkod" name="neptunkod" required><br><br>
-        <input type="submit" value="Mentés" id="hozzáadásBtn">
-    </form>
-</div>
+  <div class="container">
+    <h1>FXVAUU Hallgatók</h1>
 
+    <div class="card">
+      <form id="studentForm">
+        <h3>Új hallgató hozzáadása</h3>
+        <div class="row">
+          <label for="nev">Név</label>
+          <input type="text" id="nev" required>
+        </div>
+        <div class="row">
+          <label for="evfolyam">Évfolyam</label>
+          <input type="number" id="evfolyam" min="1" max="8" required>
+        </div>
+        <div class="row">
+          <label for="szak">Szak</label>
+          <input type="text" id="szak" required>
+        </div>
+        <div class="row">
+          <label for="email">Email</label>
+          <input type="text" id="email" required>
+        </div>
+        <div class="row">
+          <label for="neptun">NEPTUN kód</label>
+          <input type="text" id="neptun" required>
+        </div>
+        <div class="row">
+          <button type="submit" class="save" id="saveBtn">Mentés</button>
+          <button type="button" class="cancel" id="cancelEdit" style="display:none">Mégse</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+        <div>
+          <label for="searchField">Keresés (név/évfolyam/szak/email/NEPTUN)</label><br>
+          <input type="text" id="searchField" placeholder="Írj be egy kifejezést...">
+        </div>
+
+        <div>
+          <label for="sortSelect">Rendezés:</label><br>
+          <select id="sortSelect">
+            <option value="none">Nincs rendezés</option>
+            <option value="nev_asc">Név növekvő</option>
+            <option value="nev_desc">Név csökkenő</option>
+            <option value="ev_asc">Évfolyam növekvő</option>
+            <option value="ev_desc">Évfolyam csökkenő</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Export / Import JSON</label><br>
+          <button id="exportBtn">Export JSON</button>
+          <input type="file" id="importFile" class="import-input" accept="application/json">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hallgatók listája</h3>
+      <div id="tableWrap">
+        <table id="studentsTable">
+          <thead>
+            <tr>
+              <th>Név</th>
+              <th>Évfolyam</th>
+              <th>Szak</th>
+              <th>Email</th>
+              <th>NEPTUN</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sorok ide jönnek JavaScript-ből -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="message" class="msg" style="display:none"></div>
+
+  </div>
+
+  <script>
+    // Kulcs a LocalStorage-ben
+    const STORAGE_KEY = 'neptunDB_v1';
+
+
+    // Állapot
+    let students = [];
+    let editingIndex = -1; // -1 = új bejegyzés
+
+    // DOM elemek
+    const form = document.getElementById('studentForm');
+    const nevInput = document.getElementById('nev');
+    const evInput = document.getElementById('evfolyam');
+    const szakInput = document.getElementById('szak');
+    const emailInput = document.getElementById('email');
+    const neptunInput = document.getElementById('neptun');
+    const saveBtn = document.getElementById('saveBtn');
+    const cancelEdit = document.getElementById('cancelEdit');
+    const tableBody = document.querySelector('#studentsTable tbody');
+    const searchField = document.getElementById('searchField');
+    const sortSelect = document.getElementById('sortSelect');
+    const exportBtn = document.getElementById('exportBtn');
+    const importFile = document.getElementById('importFile');
+    const messageBox = document.getElementById('message');
+
+    // Inicializálás
+    function init(){
+      loadFromStorage();
+      renderTable();
+      attachEvents();
+    }
+
+    // Betölt LocalStorage-ből vagy alap adatok
+    function loadFromStorage(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        try{
+          students = JSON.parse(raw);
+        }catch(e){
+          students = [];
+          console.error('Hibás JSON a LocalStorage-ben:', e);
+        }
+      }else{
+        students = defaultStudents.slice();
+        saveToStorage();
+      }
+    }
+
+    // Ment LocalStorage-be
+    function saveToStorage(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+    }
+
+    // Üzenet megjelenítése
+    function showMessage(text, ms=2000){
+      messageBox.textContent = text;
+      messageBox.style.display = 'block';
+      clearTimeout(messageBox._timeout);
+      messageBox._timeout = setTimeout(()=>{messageBox.style.display='none'}, ms);
+    }
+
+    // Rendezés a kiválasztás alapján
+    function sortData(data){
+      const opt = sortSelect.value;
+      const copy = data.slice();
+      if(opt==='nev_asc') copy.sort((a,b)=> a.nev.localeCompare(b.nev));
+      else if(opt==='nev_desc') copy.sort((a,b)=> b.nev.localeCompare(a.nev));
+      else if(opt==='ev_asc') copy.sort((a,b)=> a.evfolyam - b.evfolyam);
+      else if(opt==='ev_desc') copy.sort((a,b)=> b.evfolyam - a.evfolyam);
+      return copy;
+    }
+
+    // Szűrés kereső szerint
+    function filterData(data){
+      const q = searchField.value.trim().toLowerCase();
+      if(!q) return data;
+      return data.filter(s =>
+        (s.nev||'').toLowerCase().includes(q) ||
+        String(s.evfolyam||'').toLowerCase().includes(q) ||
+        (s.szak||'').toLowerCase().includes(q) ||
+        (s.email||'').toLowerCase().includes(q) ||
+        (s.neptun||'').toLowerCase().includes(q) 
+      );
+    }
+
+    // Táblázat renderelése
+    function renderTable(){
+      // alkalmazzuk a rendezést és a keresést
+      let visible = sortData(filterData(students));
+      tableBody.innerHTML = '';
+      if(visible.length===0){
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center">Nincs találat</td></tr>';
+        return;
+      }
+      visible.forEach((s, idx)=>{
+        // Az idx a visible tömb indexe, de szükségünk van a valódi indexre
+        // Keresés a students tömbben neptun alapján (feltételezve egyedi NEPTUN)
+        const realIndex = students.findIndex(x=> x.neptun === s.neptun);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(s.nev)}</td>
+          <td>${escapeHtml(s.evfolyam)}</td>
+          <td>${escapeHtml(s.szak)}</td>
+          <td>${escapeHtml(s.email)}</td>
+          <td>${escapeHtml(s.neptun)}</td>
+          <td class="actions">
+            <button data-index="${realIndex}" class="btn-edit">Módosít</button>
+            <button data-index="${realIndex}" class="btn-delete">Töröl</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // XSS védelem egyszerûsített: escape
+    function escapeHtml(str){
+      if(str===null || str===undefined) return '';
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#39;");
+    }
+
+    // űrlap küldése (Mentés)
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const student = {
+        nev: nevInput.value.trim(),
+        evfolyam: Number(evInput.value),
+        szak: szakInput.value.trim(),
+        email: emailInput.value.trim(),
+        neptun: neptunInput.value.trim().toUpperCase()
+      };
+
+      if(!student.nev || !student.neptun){
+        showMessage('A név és a NEPTUN mező kötelező');
+        return;
+      }
+
+      // Ha új bejegyzés, ellenőrizzük az egyedi NEPTUN-t
+      if(editingIndex === -1){
+        const exists = students.some(s => s.neptun === student.neptun);
+        if(exists){
+          showMessage('Már létezik ilyen NEPTUN kódú hallgató');
+          return;
+        }
+        students.push(student);
+        showMessage('Új hallgató hozzáadva');
+      } else {
+        // Módosítás: ha a NEPTUN megváltozik, ellenőrizzük, hogy ne ütközzön
+        const otherIndex = students.findIndex((s, i)=> s.neptun === student.neptun && i!==editingIndex);
+        if(otherIndex !== -1){
+          showMessage('A megadott NEPTUN kód már máshoz tartozik');
+          return;
+        }
+        students[editingIndex] = student;
+        showMessage('Hallgató módosítva');
+        editingIndex = -1;
+        cancelEdit.style.display = 'none';
+        saveBtn.textContent = 'Mentés';
+      }
+
+      saveToStorage();
+      form.reset();
+      renderTable();
+    });
+
+    // Szerkesztés és törlés eseménykezelők a táblázaton (delegáció)
+    tableBody.addEventListener('click', function(e){
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const idx = Number(btn.getAttribute('data-index'));
+      if(btn.classList.contains('btn-edit')){
+        startEdit(idx);
+      } else if(btn.classList.contains('btn-delete')){
+        if(confirm('Biztosan törlöd a hallgatót?')){
+          students.splice(idx,1);
+          saveToStorage();
+          renderTable();
+          showMessage('Hallgató törölve');
+        }
+      }
+    });
+
+    // Szerkesztés indítása: kitölti az űrlapot
+    function startEdit(index){
+      const s = students[index];
+      if(!s) return;
+      nevInput.value = s.nev;
+      evInput.value = s.evfolyam;
+      szakInput.value = s.szak;
+      emailInput.value = s.email;
+      neptunInput.value = s.neptun;
+      editingIndex = index;
+      saveBtn.textContent = 'Mentés (módosítás)';
+      cancelEdit.style.display = 'inline-block';
+      showMessage('Szerkesztési mód');
+    }
+
+    cancelEdit.addEventListener('click', function(){
+      editingIndex = -1;
+      form.reset();
+      saveBtn.textContent = 'Mentés';
+      cancelEdit.style.display = 'none';
+    });
+
+    // Keresés és rendezés esemény
+    searchField.addEventListener('input', renderTable);
+    sortSelect.addEventListener('change', renderTable);
+
+    // Export JSON (letöltés)
+    exportBtn.addEventListener('click', function(){
+      const dataStr = JSON.stringify(students, null, 2);
+      const blob = new Blob([dataStr], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'neptun_export_'+ new Date().toISOString().slice(0,10) +'.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Import JSON
+    importFile.addEventListener('change', function(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt){
+        try{
+          const arr = JSON.parse(evt.target.result);
+          if(!Array.isArray(arr)) throw new Error('A fájl nem tömböt tartalmaz');
+          // Egyszerû validálás: objektumok, legyenek nevek és neptunok
+          const ok = arr.every(it => it && typeof it.nev === 'string' && typeof it.neptun === 'string');
+          if(!ok) throw new Error('A fájl formátuma nem megfelelő');
+
+          // Kérdezzük meg: felülírja-e a meglévõ adatokat vagy hozzáfűz?
+          const doReplace = confirm('Felülírja a jelenlegi adatokat? OK = felülír, Mégse = hozzáfűz');
+          if(doReplace){
+            students = arr.map(x=> ({nev:x.nev||'', evfolyam: Number(x.evfolyam)||1, szak:x.szak||'', email:x.email||'', neptun:(x.neptun||'').toUpperCase()}));
+          } else {
+            // hozzáfűzés: csak azokat adja hozzá, amelyek NEPTUN alapján nem léteznek
+            const existing = new Set(students.map(s=>s.neptun));
+            arr.forEach(x=>{
+              const nu = (x.neptun||'').toUpperCase();
+              if(!existing.has(nu)){
+                students.push({nev:x.nev||'', evfolyam: Number(x.evfolyam)||1, szak:x.szak||'', email:x.email||'', neptun:nu});
+                existing.add(nu);
+              }
+            });
+          }
+
+          saveToStorage();
+          renderTable();
+          showMessage('Import sikeres');
+        }catch(err){
+          alert('Import hiba: ' + err.message);
+        }
+      };
+      reader.readAsText(file, 'utf-8');
+      // ürítsük ki az inputot, hogy ugyanaz a fájl újra importálható legyen
+      importFile.value = '';
+    });
+
+    // Segítségek és billentyűparancsok (nem kötelező)
+    function attachEvents(){
+      // Például Enter a keresőben ne küldje el az űrlapot
+      searchField.addEventListener('keydown', function(e){ if(e.key === 'Enter') e.preventDefault(); });
+
+      // gyors validálás: email forma nagyon egyszerûen
+      emailInput.addEventListener('blur', function(){
+        const v = emailInput.value.trim();
+        if(v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
+          // nem akadályozzuk meg a mentést, csak figyelmeztetünk
+          console.warn('Nem szabványos email formátum');
+        }
+      });
+    }
+
+    // Indítás
+    init();
+  </script>
 </body>
-
 </html>
